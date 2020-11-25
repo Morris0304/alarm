@@ -5,15 +5,16 @@ import React, {useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 //import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './src/Home/HomeScreen';
 
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>ALARM</Text>
-    </View>
-  );
-}
+// function HomeScreen() {
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//       <Text>ALARM</Text>
+//     </View>
+//   );
+// }
 function DetailsScreen() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -34,7 +35,7 @@ function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen style={{ alignItems: 'flex-start'}} name="Home" component={HomeScreen}  />
         {/* <Tab.Screen name="Person" component={NewAlarm} />
         <Tab.Screen name="Product" component={Weather} /> */}
         {/* <Tab.Screen name="Click" component={Click} initialParams={{ count: 10 }}/> */}

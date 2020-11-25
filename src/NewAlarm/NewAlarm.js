@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {FlatList, View, Text} from 'react-native';
-import {Icon, Fab} from 'native-base';
+import {Icon, Fab} from '../Home/node_modules/native-base';
 import PersonAdd from './PersonAdd';
-import axios from 'axios';
+import axios from '../Home/node_modules/axios';
 import styles from '../styles';
 import {axios_config, url} from './config';
 
@@ -29,7 +29,7 @@ export default function NewAlarm() {
   async function fetchData () {
       const result = await axios.get(get_url,axios_config);
       //console.log(result);
-      setPersons(result.data.records);
+      setAlarmName(result.data.records);
   }
 
   useEffect(() => {
