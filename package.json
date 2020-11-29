@@ -8,11 +8,6 @@
     "eject": "expo eject"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@react-native-community/masked-view": "0.1.10",
-    "@react-navigation/bottom-tabs": "^5.11.1",
-    "@react-navigation/native": "^5.8.9",
-=======
     "@emotion/styled": "^11.0.0",
     "@eva-design/eva": "^2.0.0",
     "@freakycoder/react-native-bounceable": "^0.2.4",
@@ -23,7 +18,6 @@
     "@react-navigation/native": "^5.8.9",
     "@react-navigation/stack": "^5.12.6",
     "@ui-kitten/components": "^5.0.0",
->>>>>>> d1e8d2d6598b9ec3c4f0b541996360fd0c580b05
     "axios": "^0.21.0",
     "expo": "~39.0.2",
     "expo-status-bar": "~1.0.2",
@@ -31,14 +25,6 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
-<<<<<<< HEAD
-    "react-native-gesture-handler": "~1.7.0",
-    "react-native-reanimated": "~1.13.0",
-    "react-native-safe-area-context": "3.1.4",
-    "react-native-screens": "~2.10.1",
-    "react-native-web": "~0.13.12",
-    "react-navigation": "^4.4.3"
-=======
     "react-native-apple-header": "^0.1.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-dynamic-vector-icons": "^1.1.4",
@@ -57,7 +43,6 @@
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.3",
     "tslib": "^2.0.3"
->>>>>>> d1e8d2d6598b9ec3c4f0b541996360fd0c580b05
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

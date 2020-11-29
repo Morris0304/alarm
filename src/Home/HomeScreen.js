@@ -1,9 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, View, Text} from 'react-native';
-import {Icon, Fab} from 'native-base';
 import axios from 'axios';
-import styles from '../styles';
+// import styles from '../styles';
 import {axios_config, url} from './config';
+import { View, Text, Button, ImageBackground, Layout } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Datepicker,Toggle } from '@ui-kitten/components';
+import { Switch, StyleSheet, StatusBar } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-native-paper';
+import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
+import {Card} from 'react-native-shadow-cards';
 
 
 export default function HomeScreen() {
