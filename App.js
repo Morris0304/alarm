@@ -16,7 +16,7 @@ import {Card} from 'react-native-shadow-cards';
 
 
 const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
-
+ 
 const toggle = (navigation) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
