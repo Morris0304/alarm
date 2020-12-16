@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
-// import styles from '../styles';
+import styles from '../styles';
 import {axios_config, url} from './config';
-import { View, Text, Button, ImageBackground, Layout } from 'react-native';
+import { FlatList, View, Text, Button, ImageBackground, Layout,  ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,6 +13,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-native-paper';
 import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
 import {Card} from 'react-native-shadow-cards';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 
 
 export default function HomeScreen() {
@@ -30,14 +33,12 @@ export default function HomeScreen() {
   const onStateChange = ({ open }) => setState({ open });
   const { open } = state;
 
-  // const renderItem = ({ item, index }) => (
-  //   <View style={styles.item}>
-  //   <Text>{index+1}</Text>
-  //   <Text style={styles.title}>{item.fields.Name}</Text>
-  //   <Text>{item.fields.Time},</Text>
-  //   <Text>{item.fields.Status}</Text>
-  //   </View>
-  // );
+  const renderItem = ({ item, index }) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{item.fields.Time}</Text>
+      <Text>{item.fields.Name}</Text>
+    </View>
+  );
 
   async function fetchData () {
       const result = await axios.get(get_url,axios_config);
@@ -58,32 +59,36 @@ export default function HomeScreen() {
       <StatusBar barStyle="dark-content" />
       <ImageBackground source={image} style={styles.image}>
       {/* <Text style={styles.text}>早安🥰</Text> */}
-      <View style={{marginVertical:20}}>
-      <Card style={{padding: 15, margin: 20, cornerRadius:30, backgroundColor: 'rgba(1000, 1000, 1000, 0.6)', borderRadius: 25}} >
-        <Text style={{ fontWeight:'500', fontSize:50, marginLeft:10 }}>09:25</Text>
-        <Switch style={{ marginLeft: 280, marginTop:-40}}
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-          <Icon name="more" style={{ marginLeft:300, marginTop:13, justifyContent:"center"}} />
+      {/* <FlatList
+      data={alarm} 
+      renderItem = {renderItem} 
+      keyExtractor={(item, index) => ""+index}>
+      </FlatList> */}
+      <ScrollView>
+      {
+        alarm.map((item)=>(
           
-      </Card>
-      <Card style={{padding: 15, margin: 20, cornerRadius:30, backgroundColor: 'rgba(1000, 1000, 1000, 0.6)', borderRadius: 25}} >
-        <Text style={{ fontWeight:'500', fontSize:50, marginLeft:10 }}>09:25</Text>
-        <Switch style={{ marginLeft: 280, marginTop:-40}}
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-          <Icon name="more" style={{ marginLeft:300, marginTop:13, justifyContent:"center"}} />
+            <Card style={{padding: 15, 
+              margin: 10, 
+              cornerRadius:30,
+              alignSelf:'center', 
+              backgroundColor: 'rgba(1000, 1000, 1000, 0.6)', 
+              borderRadius: 25}} >
+              <Text style={styles.text}>{item.fields.Time}</Text>
+                <Switch style={styles.switch}
+                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                    thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitch}
+                    value={isEnabled}
+                  />
+                  <Icon name="more" style={{ marginLeft:300, marginTop:13, justifyContent:"center"}} />
+                  
+              </Card>
           
-      </Card>
-      </View>
+        ))
+      }
+      </ScrollView>
     <Provider>
       <Portal>
         <FAB.Group 
@@ -122,30 +127,30 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // alignItems: "center",
-    // justifyContent: "center",
-    flexDirection: "column",
-    minHeight: 500
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center"
-  },
-  text: {
-    color: "white",
-    fontSize: 42,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "#000000a0"
-  },
-  button: {
-    marginTop:"5%"
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     // alignItems: "center",
+//     // justifyContent: "center",
+//     flexDirection: "column",
+//     minHeight: 500
+//   },
+//   image: {
+//     flex: 1,
+//     resizeMode: "cover",
+//     justifyContent: "center"
+//   },
+//   text: {
+//     color: "white",
+//     fontSize: 42,
+//     fontWeight: "bold",
+//     textAlign: "center",
+//     backgroundColor: "#000000a0"
+//   },
+//   button: {
+//     marginTop:"5%"
+//   },
+// });
 
 
   

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { View, Text, Button, ImageBackground, Layout } from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import { View, Text, Button, ImageBackground, Layout, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,6 +13,7 @@ import {Card} from 'react-native-shadow-cards';
 import HomeScreen from './src/Home/HomeScreen';
 // import styles from './src/styles';
 import NewAlarm from './src/NewAlarm/NewAlarm';
+
 
 
 function DetailsScreen({ navigation }) {
@@ -102,7 +103,6 @@ export default function App() {
       >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="New" component={NewAlarm} />
-        {/* <Tab.Screen name="PersonList" component={Weather} /> */}
       </Tab.Navigator>
     </NavigationContainer>
   );
