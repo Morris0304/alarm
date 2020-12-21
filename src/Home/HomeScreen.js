@@ -13,9 +13,10 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-native-paper';
 import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
 import {Card} from 'react-native-shadow-cards';
+//import addPhoneNum from 'addUser/addPhoneNum' ;
 
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
   const [alarm, setAlarm] = useState([]);
@@ -90,7 +91,8 @@ export default function HomeScreen() {
           open={open}
           icon={open ? 'calendar-today' : 'plus'}
           actions={[
-            { icon: 'plus', onPress: () => console.log('Pressed add') },
+            { icon: 'plus', 
+              onPress: () => navigation.navigate('addPhoneNum') },
             {
               icon: 'star',
               label: 'Star',
