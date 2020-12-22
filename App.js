@@ -13,8 +13,8 @@ import {Card} from 'react-native-shadow-cards';
 import HomeScreen from './src/Home/HomeScreen';
 // import styles from './src/styles';
 import NewAlarm from './src/NewAlarm/NewAlarm';
-import addPhoneNum from './src/addUser/addPhoneNum';
-
+import SignUp from './src/account/SignUp';
+import SignIn from './src/account/SignIn';
 
 
 function DetailsScreen({ navigation }) {
@@ -70,19 +70,20 @@ function Home() {
     </Stack.Navigator>
   );
 }
+// const Stack = createStackNavigator();
 
-export default function App() {
+function Sign() {
   return (
-    // <NavigationContainer>
-    //   <Tab.Navigator>
-        // <Tab.Screen name="Home" component={HomeScreen} />
-        // <Tab.Screen name="Details" component={DetailsScreen} />
-        // <Tab.Screen name="New" component={New} />
-        // <Tab.Screen name="ProductList" component={ProductList} />
-        // <Tab.Screen name="PersonList" component={PersonList} />
-    //   </Tab.Navigator>
-    // </NavigationContainer>
-    <NavigationContainer>
+    <Stack.Navigator screenOptions={{headerShown: false}} >
+    <Stack.Screen name="SignIn" component={SignIn} />
+    <Stack.Screen name="SignUp" component={SignUp} />
+  </Stack.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+const TabStack = () =>{
+  return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -116,8 +117,27 @@ export default function App() {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="New" component={NewAlarm} />
       </Tab.Navigator>
+    );
+  }
+  
+
+export default function App() {
+  return (
+    // <NavigationContainer>
+    //   <Tab.Navigator>
+        // <Tab.Screen name="Home" component={HomeScreen} />
+        // <Tab.Screen name="Details" component={DetailsScreen} />
+        // <Tab.Screen name="New" component={New} />
+        // <Tab.Screen name="ProductList" component={ProductList} />
+        // <Tab.Screen name="PersonList" component={PersonList} />
+    //   </Tab.Navigator>
+    // </NavigationContainer>
+    <NavigationContainer>
+      {false ?
+      <TabStack/>
+      :
+      <Sign/>
+      }
     </NavigationContainer>
-  );
+    );
 }
-
-
