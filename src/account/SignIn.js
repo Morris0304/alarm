@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Button, View, Text, TextInput, Modal } from 'react-native';
 import axios from 'axios';
 import styles from '../styles';
+import HomeScreen from '../Home/HomeScreen';
 
 export default function SignIn({navigation}) {
 
@@ -28,6 +29,7 @@ export default function SignIn({navigation}) {
       // const res= firebase.auth()
       //   .signInWithEmailAndPassword(email, password);
       console.log('User login successfully!');
+      navigation.navigate('HomeScreen')
       setID('');
       setPassword('');
       setMessage('');

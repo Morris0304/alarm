@@ -125,6 +125,7 @@ export default function HomeScreen({navigation}) {
     </ImageBackground>
     </View>
     
+    
   );
 }
 

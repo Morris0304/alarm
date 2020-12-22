@@ -66,7 +66,7 @@ function Home() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="addPhoneNum" component={addPhoneNum} />
+      
     </Stack.Navigator>
   );
 }
@@ -77,11 +77,12 @@ function Sign() {
     <Stack.Navigator screenOptions={{headerShown: false}} >
     <Stack.Screen name="SignIn" component={SignIn} />
     <Stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Screen name="HomeScreen" component={HomeScreen} />
   </Stack.Navigator>
   );
 }
 
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
 const TabStack = () =>{
   return (
       <Tab.Navigator
@@ -133,7 +134,7 @@ export default function App() {
     //   </Tab.Navigator>
     // </NavigationContainer>
     <NavigationContainer>
-      {false ?
+      {true ?
       <TabStack/>
       :
       <Sign/>
