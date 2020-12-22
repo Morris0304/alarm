@@ -49,6 +49,41 @@ const styles = StyleSheet.create({
       paddingTop: '15%',
       //marginTop: StatusBar.currentHeight || 250,
     },
+    accform: {
+      flex: 1,
+      backgroundColor: '#003f5c',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    accinputView:{
+      width:"80%",
+      backgroundColor:"#465881",
+      borderRadius:25,
+      height:50,
+      marginBottom:20,
+      justifyContent:"center",
+      padding:20
+    },
+    accloginBtn:{
+      width:"80%",
+      backgroundColor:"#fb5b5a",
+      borderRadius:25,
+      height:50,
+      alignItems:"center",
+      justifyContent:"center",
+      marginTop:40,
+      marginBottom:10,
+    },
+    accinputStyle: {
+      height:50,
+      color:"white",
+    },
+    acclogo:{
+      fontWeight:"bold",
+      fontSize:50,
+      color:"#fb5b5a",
+      marginBottom:40
+    },
   
   });
 export default styles;
