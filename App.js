@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { View, Text, Button, ImageBackground, Layout, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Datepicker,Toggle } from '@ui-kitten/components';
