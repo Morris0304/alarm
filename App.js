@@ -13,6 +13,8 @@ import {Card} from 'react-native-shadow-cards';
 import HomeScreen from './src/Home/HomeScreen';
 // import styles from './src/styles';
 import NewAlarm from './src/NewAlarm/NewAlarm';
+import Notification from './src/Home/notification';
+import Alarm from './src/Home/alarm';
 
 
 function DetailsScreen({ navigation }) {
@@ -102,6 +104,8 @@ export default function App() {
       >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="New" component={NewAlarm} />
+        <Tab.Screen name="Notification" component={Notification} />
+        <Tab.Screen name="Alarm" component={Alarm} />
         {/* <Tab.Screen name="PersonList" component={Weather} /> */}
       </Tab.Navigator>
     </NavigationContainer>
