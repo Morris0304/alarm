@@ -33,12 +33,12 @@ export default function HomeScreen() {
   const onStateChange = ({ open }) => setState({ open });
   const { open } = state;
 
-  const renderItem = ({ item, index }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{item.fields.Time}</Text>
-      <Text>{item.fields.Name}</Text>
-    </View>
-  );
+  // const renderItem = ({ item, index }) => (
+  //   <View style={styles.item}>
+  //     <Text style={styles.title}>{item.fields.Time}</Text>
+  //     <Text>{item.fields.Name}</Text>
+  //   </View>
+  // );
 
   async function fetchData () {
       const result = await axios.get(get_url,axios_config);
@@ -67,7 +67,6 @@ export default function HomeScreen() {
       <ScrollView>
       {
         alarm.map((item)=>(
-          
             <Card style={{padding: 15, 
               margin: 10, 
               cornerRadius:30,
