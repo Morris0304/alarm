@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-// import styles from '../styles';
 import {axios_config, url} from './config';
-import { View, Text, Button, ImageBackground, Layout } from 'react-native';
+import { View, Text, Button, ImageBackground, Layout ,TextInput} from 'react-native';
+import {CheckBox} from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,101 +13,242 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-native-paper';
 import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
 import {Card} from 'react-native-shadow-cards';
-
+import { AsyncStorage } from 'react-native';
+import styles from '../styles';
+import { Divider } from 'react-native-elements';
+import moment from "moment/moment";
 
 export default function NewAlarm() {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
-  const [alarmName, setAlarmName] = useState([]);
-  const [time, setTime] = useState([]);
-  const [game, setGame] = useState([]);
-  const [day, steDay] = useState([]);
-  
-  const [modalVisible, setModalVisible] = useState(false);
+  const [Name, setName] = useState("鬧鐘");
+  const [Time, setTime] = useState('');
+  const [Repeat, setRepeat] = useState("");
 
   const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
+
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
-  
-    const showDatePicker = () => {
-      setDatePickerVisibility(true);
-    };
-  
-    const hideDatePicker = () => {
-      setDatePickerVisibility(false);
-    };
-    const showTimePicker = () => {
-      setTimePickerVisibility(true);
-    };
-  
-    const hideTimePicker = () => {
-      setTimePickerVisibility(false);
-    };
-  
-    const handleConfirmd = (date) => {
-      console.warn("A date has been picked: ", date);
-      hideDatePicker();
-    };
+  useEffect(()=>{
+    if(isEnabled==true){
+      setRepeat("1");
+    }
+    else{
+      setRepeat("0");
+    }
 
-    const handleConfirmt = (time) => {
-      console.warn("A time has been picked: ", time);
-      hideTimePicker();
-    };
-
+  })
   
-    return (
-      <View style={styles.container}>
-        <ImageBackground source={image} style={styles.image}>
-        <Button title="選擇日期" onPress={showDatePicker} />
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          locale="zh-Cn"
-          onConfirm={handleConfirmd}
-          onCancel={hideDatePicker}
-          isDarkModeEnabled={false}
-        />
-        <Button title="選擇時間" onPress={showTimePicker} />
-        <DateTimePickerModal
-          isVisible={isTimePickerVisible}
-          mode="time"
-          locale="zh-Cn"
-          onConfirm={handleConfirmt}
-          onCancel={hideTimePicker}
-          isDarkModeEnabled={false}
-        />
-        </ImageBackground>
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+  const showTimePicker = () => {
+    setTimePickerVisibility(true);
+  };
+
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+
+  const handleConfirmt = (time) => {
+    // console.warn("A time has been picked: ", time);
+    console.log(time) //這邊顯示的時間有問題
+    const time1 = moment(time).format('H:mm') //這邊把時間變成正確的
+    console.log(time1)
+    // const strToDate = Date.parse(time1)
+    // console.log(strToDate)
+    setTime(time1) //時間以字串方式儲存
+    console.log(Time) 
+    hideTimePicker();
+  };
+
+  const [Monday, setMonday] = useState(false);
+  const [Tuesday,setTuesday] = useState(false);
+  const [Wednesday, setWednesday] = useState(false);
+  const [Thursday, setThursday] = useState(false);
+  const [Friday, setFriday] = useState(false);
+  const [Saturday, setSaturday] = useState(false);
+  const [Sunday, setSunday] = useState(false);
+  const [week, setWeek] = useState([false,false,false,false,false,false,false]);
+  // const [toggleCheckBox, setToggleCheckBox] = useState(false)
+
+  handleCheck = (day) => {
+    week[day] = !week[day]
+    setWeek([...week])
+  }
+  
+  async function sendData () {
+    const weeks = [];
+      if(week[0] == true){
+        weeks.push("sunday")
+      }
+      if(week[1] == true){
+        weeks.push("monday")
+      }
+      if(week[2] == true){
+        weeks.push("tuesday")
+      }
+      if(week[3] == true){
+        weeks.push("wednesday")
+      }
+      if(week[4] == true){
+        weeks.push("thursday")
+      }
+      if(week[5] == true){
+        weeks.push("friday")
+      }
+      if(week[6] == true){
+        weeks.push("saturday")
+      }
+      
+    const newAlarm={
+      fields:{
+        
+        Name:Name,
+        Repeat:Repeat,
+        Day:[...weeks],
+        Time:Time,
+      }
+    }
+    console.log(Time)
+    console.log(week)
+    // alert(Name);
+    // alert(Time);
+    // alert(Repeat);
+    //console.log(newPerson);
+    try {
+      const result = await axios.post(get_url,newAlarm, axios_config);
+      // console.log(result);
+      props.update();
+    }
+    catch (e){
+      console.log("error:"+e);
+    }
+}
+
+function update(){
+  sendData();
+}
+
+  return(
+    
+    <View style = {styles.form}> 
+
+    <View style={styles.headerStyle}>
+        <Text style={styles.headerText}>新增鬧鐘</Text>
+        
+      </View> 
+      
+      <View >
+      <Text style={styles.subtitle}>鬧鐘名稱</Text>
       </View>
-    );
-  
+      <View style={styles.NewAlarmInputView}>
+      <TextInput
+        style={styles.inputStyle}
+        placeholderTextColor="#003f5c"
+        placeholder="鬧鐘名"
+        value={Name}
+        onChangeText={text=>setName(text)}
+      /> 
+      </View>
+      
+      <View style={{alignSelf:'center', flexDirection:'row'}}>
+      <Text style={styles.NewAlarmChooseTimeView}>
+        {Time}
+        </Text>
+     
+      <Button title="選擇時間" onPress={showTimePicker} />
+      
+         <DateTimePickerModal
+           isVisible={isTimePickerVisible}
+           mode="time"
+           locale="en-GB"
+           onConfirm={handleConfirmt}
+           onCancel={hideTimePicker}
+           isDarkModeEnabled={false}
+          //  onChangeTime={time=>setTime(time)}
+         />
+        </View>
+       {/* <TextInput
+        style={styles.inputStyle}
+        placeholder=""
+        value={email}
+        onChangeText={text=>setEmail(text)}
+      /> */}
+      <Divider style={styles.NewAlarmDivider} />
+      <View style={{flexDirection: 'row'}}>
+      <Text style={styles.subtitle}>每日重複</Text>
+      <Switch style={{ marginLeft: 200}}
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
+        <Divider style={styles.NewAlarmDivider} />
+      <Text style={styles.subtitle}>選擇星期重複</Text>
+      {/* {checkboxes.map(checkbox => (
+        <View style={{flexDirection: 'row'}}>
+         <CheckBox
+           center
+           key={checkbox.id}
+           checked={checkbox.id == checkedId}
+           onPress={() => handleCheck(checkbox.id)}
+         />
+      <Text>    {checkbox.title}</Text>
+         </View>
+       ))} */}
 
-  // const renderItem = ({ item, index }) => (
-  //   <View style={styles.item}>
-  //   <Text>{index+1}</Text>
-  //   <Text style={styles.title}>{item.fields.Name}</Text>
-  //   <Text>{item.fields.City},</Text>
-  //   <Text>{item.fields.Age}</Text>
-  //   </View>
-  // );
+       
+       <View style={{flexDirection:'row', alignSelf:'center'}}>
+        <View style={styles.checkbox}>
+          <CheckBox checked={week[1]} color="#fc5185" onPress={() => handleCheck(1)}/>
+          <Text style={styles.checkboxText}>星期一</Text>
+        </View>
+        <View style={styles.checkbox}>
+          <CheckBox checked={week[2]} color="#fc5185" onPress={() => handleCheck(2)}/>
+          <Text style={styles.checkboxText}>星期二</Text>
+        </View>
+        <View style={styles.checkbox}>
+          <CheckBox checked={week[3]} color="#fc5185" onPress={() => handleCheck(3)}/>
+          <Text style={styles.checkboxText}>星期三</Text>
+        </View>
+        <View style={styles.checkbox}>
+          <CheckBox checked={week[4]} color="#fc5185" onPress={() => handleCheck(4)}/>
+          <Text style={styles.checkboxText}>星期四</Text>
+        </View>
+        <View style={styles.checkbox}>
+          <CheckBox checked={week[5]} color="#fc5185" onPress={() => handleCheck(5)}/>
+          <Text style={styles.checkboxText}>星期五</Text>
+        </View>
+        <View style={styles.checkbox}>
+          <CheckBox checked={week[6]} color="#fc5185" onPress={() => handleCheck(6)}/>
+          <Text style={styles.checkboxText}>星期六</Text>
+        </View>
+        <View style={styles.checkbox}>
+          <CheckBox checked={week[0]} color="#fc5185" onPress={() => handleCheck(0)}/>
+          <Text style={styles.checkboxText}>星期日</Text>
+        </View>
+        </View>
 
-  async function fetchData () {
-      const result = await axios.get(get_url,axios_config);
-      //console.log(result);
-      setAlarmName(result.data.records);
-  }
-
-  useEffect(() => {
-    fetchData();
-  },[modalVisible]);
-
-  function update(){
-    setModalVisible(false);
-  }
-  
-};
-
-const styles = StyleSheet.create({
+        <View style={styles.NewAlarmInputBtn}>
+          <Button color="white" title="新增" onPress={update}/>
+          </View>
+      
+    </View>
+  )
+ 
+}
+const styles1 = StyleSheet.create({
   container: {
     flex: 1,
     // alignItems: "center",
@@ -118,7 +259,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center"
+    // justifyContent: "center"
   },
   text: {
     color: "white",
@@ -132,18 +273,5 @@ const styles = StyleSheet.create({
   },
 });
 
-//  return (
-//    <View style={styles.container}>
-//    <FlatList 
-//     data={persons} 
-//     renderItem = {renderItem}
-//     keyExtractor={(item, index) => ""+index}
-//     >
-//    </FlatList>
-//    <Fab onPress={()=>setModalVisible(true)}>
-//      <Icon ios='ios-add' android="md-add"/>
-//    </Fab>
-//    <PersonAdd modalVisible = {modalVisible} update={update}/>
-//    </View>
-   
-//  );
+  
+    
