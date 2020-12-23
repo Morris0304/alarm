@@ -18,7 +18,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
   const [alarm, setAlarm] = useState([]);
@@ -94,7 +94,8 @@ export default function HomeScreen() {
           open={open}
           icon={open ? 'calendar-today' : 'plus'}
           actions={[
-            { icon: 'plus', onPress: () => console.log('Pressed add') },
+            { icon: 'plus', 
+              onPress: () => navigation.navigate('addPhoneNum') },
             {
               icon: 'star',
               label: 'Star',
@@ -122,6 +123,7 @@ export default function HomeScreen() {
     </Provider>
     </ImageBackground>
     </View>
+    
     
   );
 }

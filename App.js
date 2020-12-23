@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { View, Text, Button, ImageBackground, Layout, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Datepicker,Toggle } from '@ui-kitten/components';
@@ -13,7 +13,8 @@ import {Card} from 'react-native-shadow-cards';
 import HomeScreen from './src/Home/HomeScreen';
 // import styles from './src/styles';
 import NewAlarm from './src/NewAlarm/NewAlarm';
-
+import SignUp from './src/account/SignUp';
+import SignIn from './src/account/SignIn';
 
 
 function DetailsScreen({ navigation }) {
@@ -59,19 +60,31 @@ const styles = StyleSheet.create({
 
 // const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-export default function App() {
+function Home() {
   return (
-    // <NavigationContainer>
-    //   <Tab.Navigator>
-        // <Tab.Screen name="Home" component={HomeScreen} />
-        // <Tab.Screen name="Details" component={DetailsScreen} />
-        // <Tab.Screen name="New" component={New} />
-        // <Tab.Screen name="ProductList" component={ProductList} />
-        // <Tab.Screen name="PersonList" component={PersonList} />
-    //   </Tab.Navigator>
-    // </NavigationContainer>
-    <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      
+    </Stack.Navigator>
+  );
+}
+// const Stack = createStackNavigator();
+
+function Sign() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}} >
+    <Stack.Screen name="SignIn" component={SignIn} />
+    <Stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Screen name="HomeScreen" component={HomeScreen} />
+  </Stack.Navigator>
+  );
+}
+
+// const Tab = createBottomTabNavigator();
+const TabStack = () =>{
+  return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -101,11 +114,31 @@ export default function App() {
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+    
+        <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="New" component={NewAlarm} />
       </Tab.Navigator>
+    );
+  }
+  
+
+export default function App() {
+  return (
+    // <NavigationContainer>
+    //   <Tab.Navigator>
+        // <Tab.Screen name="Home" component={HomeScreen} />
+        // <Tab.Screen name="Details" component={DetailsScreen} />
+        // <Tab.Screen name="New" component={New} />
+        // <Tab.Screen name="ProductList" component={ProductList} />
+        // <Tab.Screen name="PersonList" component={PersonList} />
+    //   </Tab.Navigator>
+    // </NavigationContainer>
+    <NavigationContainer>
+      {true ?
+      <TabStack/>
+      :
+      <Sign/>
+      }
     </NavigationContainer>
-  );
+    );
 }
-
-
