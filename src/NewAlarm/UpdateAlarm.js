@@ -277,6 +277,3 @@ const styles1 = StyleSheet.create({
     marginTop:"5%"
   },
 });
-
-  
-    
