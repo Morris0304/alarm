@@ -22,6 +22,10 @@ const styles = StyleSheet.create({
     fontSize:50,
     marginLeft:10
   },
+  text1:{
+    fontSize:20,
+    marginLeft:10
+  },
 
   input:{
     flexDirection: 'column',
@@ -35,7 +39,8 @@ const styles = StyleSheet.create({
       // alignItems: "center",
       // justifyContent: "center",
       flexDirection: "column",
-      minHeight: 500
+      minHeight: 500,
+      backgroundColor: '#97CBFF'
     },
 
   content: {

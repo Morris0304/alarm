@@ -187,8 +187,8 @@ function update(){
       <View style={{flexDirection: 'row'}}>
       <Text style={styles.subtitle}>每日重複</Text>
       <Switch style={{ marginLeft: 200}}
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+            trackColor={{ false: "#767577", true: "#fb5b5a" }}
+            thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isEnabled}
