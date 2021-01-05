@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {axios_config, url} from './config';
-import { View, Text, Button, ImageBackground, Layout ,TextInput} from 'react-native';
+import { View, Text, Button, ImageBackground, Layout ,TextInput, Modal} from 'react-native';
 import {CheckBox} from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
@@ -17,7 +17,7 @@ import styles from '../styles';
 import { Divider } from 'react-native-elements';
 import moment from "moment/moment";
 
-export default function UpdateAlarm({ navigation }) {
+export default function UpdateAlarm(props) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
   const [Name, setName] = useState("");
@@ -27,11 +27,11 @@ export default function UpdateAlarm({ navigation }) {
   const [Repeat, setRepeat] = useState("");
 
   useEffect(()=>{
-    setName(props.person.Name);
-    setTime(props.person.Time);
-    setDay(props.person.Day);
-    setStatus(props.person.Status);
-    setRepeat(props.person.Repeat);
+    setName(props.Name);
+    setTime(props.Time);
+    setDay(props.Day);
+    setStatus(props.Status);
+    setRepeat(props.Repeat);
   },[props.id]);
 
   function update(){
@@ -42,19 +42,19 @@ export default function UpdateAlarm({ navigation }) {
       ?{records:[{
         id: props.id,
         fields:{
-          Name:name,
-          Time:time,
-          Day:day,
-          Status:status,
-          Repeat:repeat
+          Name:Name,
+          Time:Time,
+          Day:Day,
+          Status:Status,
+          Repeat:Repeat
         }}]
       }
       :{fields:{
-          Name:name,
-          Time:time,
-          Day:day,
-          Status:status,
-          Repeat:repeat
+          Name:Name,
+          Time:Time,
+          Day:Day,
+          Status:Status,
+          Repeat:Repeat
       }}
 
       try {
@@ -73,11 +73,11 @@ export default function UpdateAlarm({ navigation }) {
 
   return (
     <Modal visible={props.modalVisible}>
-      <TextInput placeholder="姓名" value={name} onChangeText={text=>setName(text)}/>
-      <TextInput placeholder="時間" value={time} onChangeText={text=>setTime(text)}/>
-      <TextInput placeholder="星期" value={day} onChangeText={text=>setDay(text)}/>
-      <TextInput placeholder="開關" value={status} onChangeText={text=>setStatus(text)}/>
-      <TextInput placeholder="重複" value={repeat} onChangeText={text=>setRepeat(text)}/>
+      <TextInput placeholder="姓名" value={Name} onChangeText={text=>setName(text)}/>
+      <TextInput placeholder="時間" value={Time} onChangeText={text=>setTime(text)}/>
+      <TextInput placeholder="星期" value={Day} onChangeText={text=>setDay(text)}/>
+      <TextInput placeholder="開關" value={Status} onChangeText={text=>setStatus(text)}/>
+      <TextInput placeholder="重複" value={Repeat} onChangeText={text=>setRepeat(text)}/>
       <Button onPress={update} title="確定"/>
       <Button onPress={props.hide} title="取消"/>
     </Modal>

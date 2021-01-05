@@ -80,7 +80,7 @@ export default function HomeScreen({navigation}) {
   }
 
   async function editAlarm(){
-
+    
   }
 
   async function deleteAlarm(){
@@ -126,7 +126,7 @@ export default function HomeScreen({navigation}) {
       <ScrollView>
       {
         alarm && alarm.map(( item )=>(
-          <TouchableOpacity >
+          <TouchableOpacity onPress={()=> setSelectedId(item.id)}>
             <Card style={{padding: 15, 
               margin: 10, 
               cornerRadius:30,
@@ -149,12 +149,12 @@ export default function HomeScreen({navigation}) {
                     button={MoreIcon}
                     buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
-                    
+                    onPress={()=> setSelectedId(item.id)}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
-                    actions={[editAlarm , deleteAlarm]}
-                    onPress={()=> setSelectedId(item.id)} />
+                    actions={[editAlarm , deleteAlarm]} />
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
                   {/* <Text style={styles.text1}>{item.fields.Day}</Text> */}
+                  {/* <UpdateAlarm id={item.id}/> */}
               </Card>
               </TouchableOpacity>
         ))
