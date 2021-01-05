@@ -16,7 +16,7 @@ export default function SignIn({navigation}) {
       'Authorization': 'Bearer keyi2ADHz7suoWkJ0',
       'Content-Type': 'application/json'}
   };
-  const url="https://api.airtable.com/v0/apphKXGnHFSeqIixf/user?maxRecords=3&view=Grid%20view"; 
+  const url="https://api.airtable.com/v0/apphKXGnHFSeqIixf/user"; 
 
   async function fetchData () {
     const result = await axios.get(url,axios_config);      

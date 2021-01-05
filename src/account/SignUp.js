@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, View, Text, TextInput,Navigator,Modal} from 'react-native';
+import {Button, View, Text, TextInput,Navigator,Modal,Alert} from 'react-native';
 import axios from 'axios';
 import styles from '../styles';
 import SignIn from './SignIn';
@@ -7,6 +7,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
+const alertMessage = '註冊成功，請前往登入！';
+const alertErrorMessage = '註冊失敗，請重新輸入！';
 
 export default function SignUp({props,navigation}) {
 
@@ -20,7 +22,7 @@ export default function SignUp({props,navigation}) {
           'Authorization': 'Bearer keyi2ADHz7suoWkJ0',
           'Content-Type': 'application/json'}
       };
-      const url="https://api.airtable.com/v0/apphKXGnHFSeqIixf/user?maxRecords=3&view=Grid%20view"; 
+      const url="https://api.airtable.com/v0/apphKXGnHFSeqIixf/user"; 
 
   
   async function sendData () {
@@ -30,6 +32,15 @@ export default function SignUp({props,navigation}) {
         password:password,
       }
     }
+
+    Alert.alert(
+      '註冊成功！',
+      alertMessage,
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed!')},
+      ]
+    )
+    
     try {
         const result = await axios.post(url,newPerson, axios_config);
         console.log(result);
@@ -40,8 +51,18 @@ export default function SignUp({props,navigation}) {
       console.log("error:"+e);
     }
 }
-function SignUp(){
-  sendData();
+function Press(){
+  ID && password != null ? sendData():Alert.alert(
+    '註冊失敗',
+    alertErrorMessage,
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed!')},
+    ]
+  )
+  
+  setID("");
+  setPassword("");
+
 }
   
   return(
@@ -66,7 +87,7 @@ function SignUp(){
     <View style={styles.accloginBtn}>
       <Button
         title="SignUp"
-        onPress={SignUp}
+        onPress={Press}
         color="#ffffff"
       /></View>
       <Button        
