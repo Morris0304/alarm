@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { View, Text, Button, ImageBackground, Layout } from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import { View, Text, Button, ImageBackground, Layout, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,6 +15,7 @@ import HomeScreen from './src/Home/HomeScreen';
 import NewAlarm from './src/NewAlarm/NewAlarm';
 import SignUp from './src/account/SignUp';
 import SignIn from './src/account/SignIn';
+import UpdateAlarm from './src/NewAlarm/UpdateAlarm';
 
 
 function DetailsScreen({ navigation }) {
@@ -29,7 +30,7 @@ function DetailsScreen({ navigation }) {
       </View>
     );
   }
-  const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
+  // const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
 
   
 
@@ -58,18 +59,33 @@ const styles = StyleSheet.create({
   },
 });
 
+// const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+function Home() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="UpdateAlarm" component={UpdateAlarm} />
+    </Stack.Navigator>
+  );
+}
+// const Stack = createStackNavigator();
 
 function Sign() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}} >
     <Stack.Screen name="SignIn" component={SignIn} />
     <Stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Screen name="HomeScreen" component={HomeScreen} />
   </Stack.Navigator>
   );
 }
 
-const Tab = createBottomTabNavigator();
+
+
+// const Tab = createBottomTabNavigator();
 const TabStack = () =>{
   return (
       <Tab.Navigator
@@ -97,13 +113,13 @@ const TabStack = () =>{
           },
         })}
         tabBarOptions={{
-          activeTintColor: 'pink',
+          activeTintColor: '#fb5b5a',
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+    
+        <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="New" component={NewAlarm} />
-        {/* <Tab.Screen name="PersonList" component={Weather} /> */}
       </Tab.Navigator>
     );
   }
@@ -121,7 +137,7 @@ export default function App() {
     //   </Tab.Navigator>
     // </NavigationContainer>
     <NavigationContainer>
-      {false ?
+      {true ?
       <TabStack/>
       :
       <Sign/>
