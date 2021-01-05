@@ -15,6 +15,7 @@ import HomeScreen from './src/Home/HomeScreen';
 import NewAlarm from './src/NewAlarm/NewAlarm';
 import SignUp from './src/account/SignUp';
 import SignIn from './src/account/SignIn';
+import UpdateAlarm from './src/NewAlarm/UpdateAlarm';
 
 
 function DetailsScreen({ navigation }) {
@@ -66,7 +67,7 @@ function Home() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      
+      <Stack.Screen name="UpdateAlarm" component={UpdateAlarm} />
     </Stack.Navigator>
   );
 }
@@ -81,6 +82,8 @@ function Sign() {
   </Stack.Navigator>
   );
 }
+
+
 
 // const Tab = createBottomTabNavigator();
 const TabStack = () =>{

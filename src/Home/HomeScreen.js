@@ -23,7 +23,7 @@ import { colors } from 'react-native-elements';
 import { Size } from '@ui-kitten/components/devsupport';
 import OptionsMenu from "react-native-option-menu";
 import Airtable from 'airtable';
-import UpdateAlarm from '../UpdateAlarm/UpdateAlarm';
+import UpdateAlarm from '../NewAlarm/UpdateAlarm';
 
 
 
@@ -80,10 +80,14 @@ export default function HomeScreen({navigation}) {
   }
 
   async function editAlarm(){
+    () => navigation.navigate('UpdateAlarm')
+    const id = "morris";
+    props.update(id)
 
   }
 
   async function deleteAlarm(){
+    console.log(selectedId)
     Alert.alert(
       "刪除鬧鐘",
       "確定要刪除嗎？",
@@ -126,7 +130,7 @@ export default function HomeScreen({navigation}) {
       <ScrollView>
       {
         alarm && alarm.map(( item )=>(
-          <TouchableOpacity >
+          <TouchableOpacity onPress={()=> setSelectedId(item.id)}>
             <Card style={{padding: 15, 
               margin: 10, 
               cornerRadius:30,
@@ -146,20 +150,27 @@ export default function HomeScreen({navigation}) {
                     key={item.fields.id}
                   />
                   <OptionsMenu
+                    onPress={()=> setSelectedId(item.id)}
                     button={MoreIcon}
                     buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
                     
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
-                    actions={[editAlarm , deleteAlarm]}
-                    onPress={()=> setSelectedId(item.id)} />
+                    actions={[() => navigation.navigate('UpdateAlarm') , deleteAlarm]}
+                    onPress={()=> setSelectedId(item.id)}
+                     />
+                     
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
                   {/* <Text style={styles.text1}>{item.fields.Day}</Text> */}
               </Card>
+              
               </TouchableOpacity>
+              
         ))
+        
       }
       </ScrollView>
+      
     <Provider>
       <Portal>
         <FAB.Group 
