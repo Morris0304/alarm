@@ -23,7 +23,7 @@ import { colors } from 'react-native-elements';
 import { Size } from '@ui-kitten/components/devsupport';
 import OptionsMenu from "react-native-option-menu";
 import Airtable from 'airtable';
-import UpdateAlarm from '../UpdateAlarm/UpdateAlarm';
+import UpdateAlarm from '../NewAlarm/UpdateAlarm';
 
 
 
@@ -80,10 +80,18 @@ export default function HomeScreen({navigation}) {
   }
 
   async function editAlarm(){
+<<<<<<< HEAD
     
+=======
+    () => navigation.navigate('UpdateAlarm')
+    const id = "morris";
+    props.update(id)
+
+>>>>>>> 8e666a29e0bbba95521045544dce883b933c9fdb
   }
 
   async function deleteAlarm(){
+    console.log(selectedId)
     Alert.alert(
       "刪除鬧鐘",
       "確定要刪除嗎？",
@@ -146,20 +154,32 @@ export default function HomeScreen({navigation}) {
                     key={item.fields.id}
                   />
                   <OptionsMenu
+                    onPress={()=> setSelectedId(item.id)}
                     button={MoreIcon}
                     buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
                     onPress={()=> setSelectedId(item.id)}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
+<<<<<<< HEAD
                     actions={[editAlarm , deleteAlarm]} />
+=======
+                    actions={[() => navigation.navigate('UpdateAlarm') , deleteAlarm]}
+                    onPress={()=> setSelectedId(item.id)}
+                     />
+                     
+>>>>>>> 8e666a29e0bbba95521045544dce883b933c9fdb
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
                   {/* <Text style={styles.text1}>{item.fields.Day}</Text> */}
                   {/* <UpdateAlarm id={item.id}/> */}
               </Card>
+              
               </TouchableOpacity>
+              
         ))
+        
       }
       </ScrollView>
+      
     <Provider>
       <Portal>
         <FAB.Group 
