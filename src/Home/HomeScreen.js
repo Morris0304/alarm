@@ -24,11 +24,20 @@ import { Size } from '@ui-kitten/components/devsupport';
 import OptionsMenu from "react-native-option-menu";
 import Airtable from 'airtable';
 import UpdateAlarm from '../NewAlarm/UpdateAlarm';
+import { useDispatch, useSelector } from 'react-redux'
+import { authLogin, authLogout } from '../store/action/index'
 
 
 
 export default function HomeScreen({navigation}) {
-  var Airtable = require('airtable');
+
+  const dispatch = useDispatch()
+  
+const userId = useSelector(state=>state.authReducer.userID)
+
+console.warn('userId', userId)
+
+var Airtable = require('airtable');
   var base = new Airtable({apiKey: 'key7kYifU3zDRcM3K'}).base('apphKXGnHFSeqIixf');
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
@@ -84,6 +93,22 @@ export default function HomeScreen({navigation}) {
     const id = "morris";
     props.update(id)
 
+  }
+
+  function press(){
+    Alert.alert(
+      "登出",
+      "確定要登出嗎？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "登出", onPress: () => dispatch(authLogout()) }
+      ],
+      { cancelable: false }
+    );
   }
 
   async function deleteAlarm(){
@@ -170,8 +195,10 @@ export default function HomeScreen({navigation}) {
         
       }
       </ScrollView>
-      
-    <Provider>
+      <View style={styles.accloginBtn}>
+        <Button onPress={press} color="#ffffff" title="登出"/>
+      </View>
+    {/* <Provider>
       <Portal>
         <FAB.Group 
           open={open}
@@ -203,7 +230,7 @@ export default function HomeScreen({navigation}) {
           }}
         />
       </Portal>
-    </Provider>
+    </Provider> */}
     </ImageBackground>
     </View>
     
