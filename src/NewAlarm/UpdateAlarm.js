@@ -21,6 +21,8 @@ import moment from "moment/moment";
 export default function UpdateAlarm(props) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
+  const { item } = props.route.params
+
   const [Name, setName] = useState("鬧鐘");
   const [Time, setTime] = useState('');
   const [TimeString, setTimeString] = useState('');
@@ -83,7 +85,7 @@ export default function UpdateAlarm(props) {
   const [week, setWeek] = useState([false,false,false,false,false,false,false]);
   // const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
-  handleCheck = (day) => {
+  const handleCheck = (day) => {
     week[day] = !week[day]
     setWeek([...week])
   }

@@ -22,7 +22,7 @@ import { setStatusBarBackgroundColor } from 'expo-status-bar';
 import { colors } from 'react-native-elements';
 import { Size } from '@ui-kitten/components/devsupport';
 import OptionsMenu from "react-native-option-menu";
-import Airtable from 'airtable';
+import Airtable, { Record } from 'airtable';
 import UpdateAlarm from '../NewAlarm/UpdateAlarm';
 
 
@@ -35,13 +35,6 @@ export default function HomeScreen({navigation}) {
   const [alarm, setAlarm] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const [alarms, setAlarms] = useState({
-    Name:"",
-    Time:"",
-    Day:"",
-    Status:"",
-    Repeat:"",
-  });
 
   const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
 
@@ -67,31 +60,65 @@ export default function HomeScreen({navigation}) {
     fetchData();
   },[modalVisible]);
 
-  function update(){
-    setModalVisible(false);
+  function update(id){
+    // async function updateData(){
+    //   ?{records:[{
+    //     id: alarm.id,
+    //     fields:{
+    //       Name: alarm.fields.Name,
+    //       Repeat: alarm.fields.Repeat,
+    //       Time: alarm.fields.Time,
+    //       Day: alarm.fields.Day,
+    //       Status: alarm.fields.Status,
+
+    //     }
+    //   }]
+    //   }
+    //   :{fields:{
+    //       Name: alarm.fields.Name,
+    //       Repeat: alarm.fields.Repeat,
+    //       Time: alarm.fields.Time,
+    //       Day: alarm.fields.Day,
+    //       Status: alarm.fields.Status,
+    //   }}
+    // }
+
+    // base('alarm').update(selectedId, {
+    //   "Status": alarm.fields.Status,
+    // }, function(err, record) {
+    //   if (err) {
+    //     console.error(err);
+    //     return;
+    //   }
+    //   console.log(record.get('Status'));
+    // });
   }
 
   const onChange = (id) => {
+    //找到要改的那個switch的index(用id判斷)
     const findAlarmIndex = alarm.findIndex(item=>item.id === id)
+
+    //複製一份出來
     const temp = [...alarm]
-    temp[findAlarmIndex] = temp[findAlarmIndex].Status === 'ON' ? 'OFF' : 'ON'
-    console.log('temp', temp)
-    // setAlarm(temp)
+    //改那個switch的status 如果本來是ＯＮ改成ＯＦＦ 反之
+    temp[findAlarmIndex].fields.Status = temp[findAlarmIndex].fields.Status === 'ON' ? 'OFF' : 'ON'
+    setAlarm(temp)
+
+    base('alarm').update(id, {
+      "Status": temp[findAlarmIndex].fields.Status,
+    }, function(err, record) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(record.get('Status'));
+    });
+    update()
   }
 
-  async function editAlarm(){
-<<<<<<< HEAD
-    
-=======
-    () => navigation.navigate('UpdateAlarm')
-    const id = "morris";
-    props.update(id)
 
->>>>>>> 8e666a29e0bbba95521045544dce883b933c9fdb
-  }
-
-  async function deleteAlarm(){
-    console.log(selectedId)
+  async function deleteAlarm(id){
+    console.log('selectedId', id)
     Alert.alert(
       "刪除鬧鐘",
       "確定要刪除嗎？",
@@ -146,6 +173,7 @@ export default function HomeScreen({navigation}) {
               <Text style={styles.text}>{moment(item.fields.Time).format('H:mm')}</Text>
                 <Switch style={styles.switch}
                     trackColor={{ false: "#767577", true: "#fb5b5a" }}
+                    // 如果這個switch的狀態是on, color => f4f3f4
                     thumbColor={item.fields.Status === 'ON' ? "#f4f3f4" : "#f4f3f4"}
                     ios_backgroundColor="#3e3e3e"
                     onValueChange={()=>onChange(item.id)}
@@ -154,20 +182,13 @@ export default function HomeScreen({navigation}) {
                     key={item.fields.id}
                   />
                   <OptionsMenu
-                    onPress={()=> setSelectedId(item.id)}
                     button={MoreIcon}
                     buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
-                    onPress={()=> setSelectedId(item.id)}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
-<<<<<<< HEAD
-                    actions={[editAlarm , deleteAlarm]} />
-=======
-                    actions={[() => navigation.navigate('UpdateAlarm') , deleteAlarm]}
-                    onPress={()=> setSelectedId(item.id)}
+                    actions={[() => navigation.navigate('UpdateAlarm', {item }) , ()=>deleteAlarm(item.id)]}
                      />
                      
->>>>>>> 8e666a29e0bbba95521045544dce883b933c9fdb
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
                   {/* <Text style={styles.text1}>{item.fields.Day}</Text> */}
                   {/* <UpdateAlarm id={item.id}/> */}
