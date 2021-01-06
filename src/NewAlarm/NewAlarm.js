@@ -120,7 +120,7 @@ export default function NewAlarm() {
         Day:[...weeks],
         Time:TimeString,
         Status:"ON",
-        // userId:["rec8116cdd76088af"],
+        userId:"rec8116cdd76088af",
       }
     }
     console.log(Time)

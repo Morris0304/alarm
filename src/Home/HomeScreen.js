@@ -150,13 +150,12 @@ export default function HomeScreen({navigation}) {
                     key={item.fields.id}
                   />
                   <OptionsMenu
-                    onPress={()=> setSelectedId(item.id)}
                     button={MoreIcon}
                     buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
                     
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
-                    actions={[() => navigation.navigate('UpdateAlarm') , deleteAlarm]}
+                    actions={[() => navigation.navigate('UpdateAlarm',{item}) , deleteAlarm]}
                     onPress={()=> setSelectedId(item.id)}
                      />
                      
