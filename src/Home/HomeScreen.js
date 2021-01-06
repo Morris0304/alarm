@@ -125,30 +125,9 @@ var Airtable = require('airtable');
     update()
   }
 
-<<<<<<< HEAD
-  function press(){
-    Alert.alert(
-      "登出",
-      "確定要登出嗎？",
-      [
-        {
-          text: "取消",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "登出", onPress: () => dispatch(authLogout()) }
-      ],
-      { cancelable: false }
-    );
-  }
-
-  async function deleteAlarm(){
-    console.log(selectedId)
-=======
 
   async function deleteAlarm(id){
     console.log('selectedId', id)
->>>>>>> fda27692d3600728313bc608d22f1dcc744cd8d7
     Alert.alert(
       "刪除鬧鐘",
       "確定要刪除嗎？",
@@ -216,12 +195,7 @@ var Airtable = require('airtable');
                     buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
-<<<<<<< HEAD
-                    actions={[() => navigation.navigate('UpdateAlarm',{item}) , deleteAlarm]}
-                    onPress={()=> setSelectedId(item.id)}
-=======
                     actions={[() => navigation.navigate('UpdateAlarm', {item }) , ()=>deleteAlarm(item.id)]}
->>>>>>> fda27692d3600728313bc608d22f1dcc744cd8d7
                      />
                      
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
