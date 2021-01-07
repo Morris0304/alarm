@@ -195,7 +195,7 @@ var Airtable = require('airtable');
         
       }
       </ScrollView>
-      <View style={styles.accloginBtn}>
+      <View style={styles.acclogo}>
         <Button onPress={press} color="#ffffff" title="登出"/>
       </View>
     {/* <Provider>
