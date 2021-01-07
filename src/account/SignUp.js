@@ -37,7 +37,7 @@ export default function SignUp({props,navigation}) {
       '註冊成功！',
       alertMessage,
       [
-        {text: 'OK', onPress: () => console.log('OK Pressed!')},
+        {text: 'OK', onPress: () => navigation.navigate('SignIn')},
       ]
     )
     
