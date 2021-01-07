@@ -18,8 +18,10 @@ import styles from '../styles';
 import { Divider } from 'react-native-elements';
 import moment from "moment/moment";
 
-export default function NewAlarm() {
+export default function UpdateAlarm(props) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
+
+  const { item } = props.route.params
 
   const [Name, setName] = useState("鬧鐘");
   const [Time, setTime] = useState('');
@@ -33,17 +35,48 @@ export default function NewAlarm() {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const [week, setWeek] = useState([false,false,false,false,false,false,false]);
+  const [weeks,setWeeks] = useState([false,false,false,false,false,false,false]);
 
   useEffect(()=>{
-    if(isEnabled==true){
-      setRepeat("1");
+    for(i=0;i<item.fields.Day.length;i++){
+        if(item.fields.Day[i]=="一"){
+            weeks[1]=true
+        }
+        if(item.fields.Day[i]=="二"){
+            weeks[2]=true
+        }
+        if(item.fields.Day[i]=="三"){
+            weeks[3]=true
+        }
+        if(item.fields.Day[i]=="四"){
+            weeks[4]=true
+        }
+        if(item.fields.Day[i]=="五"){
+            weeks[5]=true
+        }
+        if(item.fields.Day[i]=="六"){
+            weeks[6]=true
+        }
+        if(item.fields.Day[i]=="日"){
+            weeks[0]=true
+        }
+        setWeeks(weeks)
+    }
+    if(item.fields.Repeat=="1"){
+        setIsEnabled(true)
     }
     else{
-      setRepeat("0");
+        setIsEnabled(false)
     }
-
+    // if(isEnabled==true){
+    //   setRepeat("1");
+    // }
+    // else{
+    //   setRepeat("0");
   })
-  
+
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -73,17 +106,9 @@ export default function NewAlarm() {
     hideTimePicker();
   };
 
-  const [Monday, setMonday] = useState(false);
-  const [Tuesday,setTuesday] = useState(false);
-  const [Wednesday, setWednesday] = useState(false);
-  const [Thursday, setThursday] = useState(false);
-  const [Friday, setFriday] = useState(false);
-  const [Saturday, setSaturday] = useState(false);
-  const [Sunday, setSunday] = useState(false);
-  const [week, setWeek] = useState([false,false,false,false,false,false,false]);
   // const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
-  handleCheck = (day) => {
+  const handleCheck = (day) => {
     week[day] = !week[day]
     setWeek([...week])
   }
@@ -120,7 +145,7 @@ export default function NewAlarm() {
         Day:[...weeks],
         Time:TimeString,
         Status:"ON",
-        userId:"rec8116cdd76088af",
+        // userId:["rec8116cdd76088af"],
       }
     }
     console.log(Time)
@@ -148,7 +173,7 @@ function update(){
     <View style = {styles.form}> 
 
     <View style={styles.headerStyle}>
-        <Text style={styles.headerText}>新增鬧鐘</Text>
+        <Text style={styles.headerText}>編輯鬧鐘</Text>
         
       </View> 
       
@@ -160,14 +185,14 @@ function update(){
         style={styles.inputStyle}
         placeholderTextColor="#003f5c"
         placeholder="鬧鐘名"
-        value={Name}
+        value={item.fields.Name}
         onChangeText={text=>setName(text)}
       /> 
       </View>
       
       <View style={{alignSelf:'center', flexDirection:'row'}}>
       <Text style={styles.NewAlarmChooseTimeView}>
-        {Time}
+        {moment(item.fields.Time).format('H:mm')}
         </Text>
      
       <Button title="選擇時間" onPress={showTimePicker} />
@@ -192,8 +217,8 @@ function update(){
       <View style={{flexDirection: 'row'}}>
       <Text style={styles.subtitle}>重複提醒</Text>
       <Switch style={{ marginLeft: 200}}
-            trackColor={{ false: "#767577", true: "#fb5b5a" }}
-            thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isEnabled}
@@ -216,31 +241,31 @@ function update(){
        
        <View style={{flexDirection:'row', alignSelf:'center'}}>
         <View style={styles.checkbox}>
-          <CheckBox checked={week[1]} color="#fc5185" onPress={() => handleCheck(1)}/>
+          <CheckBox checked={weeks[1]} color="#fc5185" onPress={() => handleCheck(1)}/>
           <Text style={styles.checkboxText}>星期一</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={week[2]} color="#fc5185" onPress={() => handleCheck(2)}/>
+          <CheckBox checked={weeks[2]} color="#fc5185" onPress={() => handleCheck(2)}/>
           <Text style={styles.checkboxText}>星期二</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={week[3]} color="#fc5185" onPress={() => handleCheck(3)}/>
+          <CheckBox checked={weeks[3]} color="#fc5185" onPress={() => handleCheck(3)}/>
           <Text style={styles.checkboxText}>星期三</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={week[4]} color="#fc5185" onPress={() => handleCheck(4)}/>
+          <CheckBox checked={weeks[4]} color="#fc5185" onPress={() => handleCheck(4)}/>
           <Text style={styles.checkboxText}>星期四</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={week[5]} color="#fc5185" onPress={() => handleCheck(5)}/>
+          <CheckBox checked={weeks[5]} color="#fc5185" onPress={() => handleCheck(5)}/>
           <Text style={styles.checkboxText}>星期五</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={week[6]} color="#fc5185" onPress={() => handleCheck(6)}/>
+          <CheckBox checked={weeks[6]} color="#fc5185" onPress={() => handleCheck(6)}/>
           <Text style={styles.checkboxText}>星期六</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={week[0]} color="#fc5185" onPress={() => handleCheck(0)}/>
+          <CheckBox checked={weeks[0]} color="#fc5185" onPress={() => handleCheck(0)}/>
           <Text style={styles.checkboxText}>星期日</Text>
         </View>
         </View>
@@ -278,5 +303,88 @@ const styles1 = StyleSheet.create({
   },
 });
 
-  
-    
+// import React, {useState, useEffect} from 'react';
+// import axios from 'axios';
+// import {axios_config, url} from './config';
+// import { View, Text, Button, ImageBackground, Layout ,TextInput} from 'react-native';
+// import {CheckBox} from 'native-base';
+// import { NavigationContainer } from '@react-navigation/native';
+// // import { createStackNavigator } from '@react-navigation/stack';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// // import Ionicons from 'react-native-vector-icons/Ionicons';
+// // import { Datepicker,Toggle } from '@ui-kitten/components';
+// import { Switch, StyleSheet, StatusBar } from "react-native";
+// import DateTimePickerModal from "react-native-modal-datetime-picker";
+// // import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-native-paper';
+// import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
+// import {Card} from 'react-native-shadow-cards';
+// import styles from '../styles';
+// import { Divider } from 'react-native-elements';
+// import moment from "moment/moment";
+
+// export default function UpdateAlarm({ navigation }) {
+//   const get_url=url+"?maxRecords=50&view=Grid%20view";
+
+//   const [Name, setName] = useState("");
+//   const [Time, setTime] = useState("");
+//   const [Day, setDay] = useState("");
+//   const [Status, setStatus] = useState("");
+//   const [Repeat, setRepeat] = useState("");
+
+//   useEffect(()=>{
+//     setName(props.person.Name);
+//     setTime(props.person.Time);
+//     setDay(props.person.Day);
+//     setStatus(props.person.Status);
+//     setRepeat(props.person.Repeat);
+//   },[props.id]);
+
+//   function update(){
+//     async function sendData () {
+//       // if id exists, assign a newPerson with id
+//       // else assign a newPerson without id
+//       const newAlarm = props.id 
+//       ?{records:[{
+//         id: props.id,
+//         fields:{
+//           Name:name,
+//           Time:time,
+//           Day:day,
+//           Status:status,
+//           Repeat:repeat
+//         }}]
+//       }
+//       :{fields:{
+//           Name:name,
+//           Time:time,
+//           Day:day,
+//           Status:status,
+//           Repeat:repeat
+//       }}
+
+//       try {
+//       // if id exists, call put
+//       // else call post      
+//       const result = props.id
+//         ?await axios.put(url,newAlarm, axios_config)
+//         :await axios.post(url,newAlarm, axios_config);
+//       props.hide();}
+//       catch (e){
+//         console.log("error:"+e);
+//       }
+//     }
+//     sendData();
+//   }
+
+//   return (
+//     <Modal visible={props.modalVisible}>
+//       <TextInput placeholder="姓名" value={name} onChangeText={text=>setName(text)}/>
+//       <TextInput placeholder="時間" value={time} onChangeText={text=>setTime(text)}/>
+//       <TextInput placeholder="星期" value={day} onChangeText={text=>setDay(text)}/>
+//       <TextInput placeholder="開關" value={status} onChangeText={text=>setStatus(text)}/>
+//       <TextInput placeholder="重複" value={repeat} onChangeText={text=>setRepeat(text)}/>
+//       <Button onPress={update} title="確定"/>
+//       <Button onPress={props.hide} title="取消"/>
+//     </Modal>
+//   );
+// }
