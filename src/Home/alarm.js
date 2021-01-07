@@ -1,6 +1,8 @@
-import * as React from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import { StyleSheet, View, Button, Text } from 'react-native';
 import AlarmClock from 'react-native-alarm-clock';
+import {axios_config, url} from './config';
+import axios from 'axios';
 
 // const create = () => {
 //   let date = new Date();
@@ -10,19 +12,56 @@ import AlarmClock from 'react-native-alarm-clock';
 //   AlarmClock.createAlarm(date.toISOString(), 'My Custom Alarm');
 // };
 
-function create () {
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
-    date.setHours(10, 17);
-  
-    AlarmClock.createAlarm(date.toISOString(), 'My Custom Alarm');
-  };
+//const [date, setDate] = useState('');
+
+// function create () {
+//     const [date, setDate] =useState(Date);
+//     setDate(date.getDate() + 1);
+//     date.setHours(10, 17);
+//     console.warn(date)
+//     AlarmClock.createAlarm(date.toISOString(), 'My Custom Alarm');
+    
+//   };
+
+
+    
 
 export default function App() {
+    const get_url=url+"?maxRecords=50&view=Grid%20view";
+
+    const [alarm, setAlarm] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [date, setDate] = useState('');
+
+
+    async function fetchData () {
+        const result = await axios.get(get_url,axios_config);
+        //console.log(result);
+        setAlarm(result.data.records);
+        //setDate(alarm.fields.Time);
+        // console.log(alarm)
+        console.log(alarm.Time)
+        console.log(date)
+
+    }
+
+
+    
+    useEffect(() => {
+      fetchData();
+    },[modalVisible]);
+    
+    function update(){
+        setModalVisible(false);
+      }
   return (
     <View style={styles.container}>
       {/* <Button title="Create Alarm at 1:55PM" onPress={() => create()} /> */}
-      <Button title="Create Alarm at 10:10PM" onPress={create} />
+      
+      <Button title="Create Alarm at 10:10PM" />
+      {alarm.map((item)=>(
+     <Text>時間{item.fields.Time}</Text>
+     ))}
     </View>
   );
 }
