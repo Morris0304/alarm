@@ -7,13 +7,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 import HomeScreen from '../Home/HomeScreen';
-// import styles from './src/styles';
+import Weather from '../weather/Weather';
 import NewAlarm from '../NewAlarm/NewAlarm';
 import SignUp from '../account/SignUp';
 import SignIn from '../account/SignIn';
 import UpdateAlarm from '../NewAlarm/UpdateAlarm';
 import { useSelector } from 'react-redux';
-// const Stack = createStackNavigator();
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -71,6 +71,7 @@ const TabStack = () =>{
     
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="New" component={NewAlarm} />
+        <Tab.Screen name="Weather" component={Weather} />
       </Tab.Navigator>
     );
   }
