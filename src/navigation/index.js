@@ -56,7 +56,7 @@ const TabStack = () =>{
                 ? 'ios-alarm'
                 : 'ios-alarm';
             } 
-            else if (route.name === 'Weather') {
+            else if (route.name === 'weather') {
               iconName = focused ? 'ios-cloud' : 'ios-cloud';
             }
             else if (route.name === 'New') {
