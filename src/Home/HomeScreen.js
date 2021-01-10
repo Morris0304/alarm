@@ -31,11 +31,11 @@ import { authLogin, authLogout } from '../store/action/index'
 
 export default function HomeScreen({navigation}) {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   
-const userId = useSelector(state=>state.authReducer.userID)
+  const userId = useSelector(state=>state.authReducer.userID);
 
-console.warn('userId', userId)
+  console.warn('userId', userId);
 
 var Airtable = require('airtable');
   var base = new Airtable({apiKey: 'key7kYifU3zDRcM3K'}).base('apphKXGnHFSeqIixf');
