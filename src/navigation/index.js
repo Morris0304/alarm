@@ -25,7 +25,14 @@ function Home() {
     </Stack.Navigator>
   );
 }
-// const Stack = createStackNavigator();
+
+function weather() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Weather" component={Weather} />
+    </Stack.Navigator>
+  );
+}
 
 function Sign() {
   return (
@@ -71,7 +78,7 @@ const TabStack = () =>{
     
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="New" component={NewAlarm} />
-        <Tab.Screen name="Weather" component={Weather} />
+        <Tab.Screen name="weather" component={weather} />
       </Tab.Navigator>
     );
   }
