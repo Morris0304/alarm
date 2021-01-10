@@ -69,40 +69,6 @@ var Airtable = require('airtable');
     fetchData();
   },[modalVisible]);
 
-  function update(id){
-    // async function updateData(){
-    //   ?{records:[{
-    //     id: alarm.id,
-    //     fields:{
-    //       Name: alarm.fields.Name,
-    //       Repeat: alarm.fields.Repeat,
-    //       Time: alarm.fields.Time,
-    //       Day: alarm.fields.Day,
-    //       Status: alarm.fields.Status,
-
-    //     }
-    //   }]
-    //   }
-    //   :{fields:{
-    //       Name: alarm.fields.Name,
-    //       Repeat: alarm.fields.Repeat,
-    //       Time: alarm.fields.Time,
-    //       Day: alarm.fields.Day,
-    //       Status: alarm.fields.Status,
-    //   }}
-    // }
-
-    // base('alarm').update(selectedId, {
-    //   "Status": alarm.fields.Status,
-    // }, function(err, record) {
-    //   if (err) {
-    //     console.error(err);
-    //     return;
-    //   }
-    //   console.log(record.get('Status'));
-    // });
-  }
-
   const onChange = (id) => {
     //找到要改的那個switch的index(用id判斷)
     const findAlarmIndex = alarm.findIndex(item=>item.id === id)
