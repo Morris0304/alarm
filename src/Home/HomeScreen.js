@@ -31,11 +31,11 @@ import { authLogin, authLogout } from '../store/action/index'
 
 export default function HomeScreen({navigation,route}) {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   
-const userId = useSelector(state=>state.authReducer.userID)
+  const userId = useSelector(state=>state.authReducer.userID);
 
-console.warn('userId', userId)
+  console.warn('userId', userId);
 
 var Airtable = require('airtable');
   var base = new Airtable({apiKey: 'key7kYifU3zDRcM3K'}).base('apphKXGnHFSeqIixf');
@@ -144,6 +144,22 @@ var Airtable = require('airtable');
     console.log('alarm', alarm)
   }, [alarm])
 
+  function press(){
+    Alert.alert(
+      "登出",
+      "確定要登出嗎？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "是", onPress: () => dispatch(authLogout()) }
+      ],
+      { cancelable: false }
+    );
+  }
+
   const MoreIcon = {uri:"https://cdn4.iconfinder.com/data/icons/pictype-free-vector-icons/16/more-512.png"};
   return (
     <View style={styles.container}>
@@ -181,7 +197,7 @@ var Airtable = require('airtable');
                   />
                   <OptionsMenu
                     button={MoreIcon}
-                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
+                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:270,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
                     actions={[() => navigation.navigate('UpdateAlarm', {item }) , ()=>deleteAlarm(item.id)]}
@@ -198,7 +214,7 @@ var Airtable = require('airtable');
         
       }
       </ScrollView>
-      <View style={styles.acclogo}>
+      <View style={styles.acclogout}>
         <Button onPress={press} color="#ffffff" title="登出"/>
       </View>
     {/* <Provider>
