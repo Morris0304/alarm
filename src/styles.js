@@ -206,6 +206,13 @@ const styles = StyleSheet.create({
       color:"#fb5b5a",
       marginBottom:40
     },
+    weather:{
+      flex: 1,
+      backgroundColor: '#003f5c',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      color:'#FFFFFF',
+    }
   
   });
 

@@ -1,6 +1,10 @@
 import React, {useState,useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
+import { colors } from 'react-native-elements';
+import Icon from 'react-native-ionicons';
+import { color } from 'react-native-reanimated';
 import styles from '../styles';
+
 
 const Weather = () => {
 
@@ -28,16 +32,29 @@ const Weather = () => {
         })
     }
 
+    const moment = require('moment');
+    const currentDateTime = moment().format('YYYY/MM/DD HH:mm:ss');
+
     return(
-        <View style={styles.accform}>
-            <Text>地區：{info.name}</Text>
-            <Text>氣溫：{info.temp}</Text>
-            <Text>濕度：{info.humidity}</Text>
-            <Text>{info.desc}</Text>
-            <Image 
-            style={{width:120,height:120}}
-            source={{uri:"http://openweathermap.org/img/w/"+info.icon+".png"}}/>
+        <View style={styles.weather}>
+            <View style={{flexDirection:'row', marginTop:80}}>
+            <Image style={{width:20,height:20, color:'#FFFFFF',marginTop:5}} 
+            source={require('../img/location.png')}/>
+            <Text style={{fontSize:30, color:'#FFFFFF', fontWeight:"bold"}}>  {info.name}</Text>
             </View>
+            <Text style={{fontSize:20, color:'#FFFFFF', marginTop:10}}>{currentDateTime}</Text>
+            <View style={{flexDirection:'row'}}>
+            <Image 
+            style={{width:120,height:120,marginTop:20}}
+            source={{uri:"http://openweathermap.org/img/w/"+info.icon+".png"}}/>
+            <View style={{flexDirection:'column'}}>
+            <Text style={{fontSize:60, color:'#FFFFFF',marginTop:40, marginLeft:20}}>{info.temp}°C</Text>
+            <Text style={{ color:'#FFFFFF' ,marginLeft:55}}>{info.desc}</Text>
+            <Text style={{ color:'#FFFFFF' ,marginLeft:70}}>濕度：{info.humidity}</Text>
+            </View>
+            </View>
+            
+        </View>
     )
 }
 export default Weather;
