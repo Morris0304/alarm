@@ -88,7 +88,6 @@ var Airtable = require('airtable');
       }
       console.log(record.get('Status'));
     });
-    update()
   }
 
 
@@ -120,6 +119,22 @@ var Airtable = require('airtable');
   useEffect(()=>{
     console.log('alarm', alarm)
   }, [alarm])
+
+  function press(){
+    Alert.alert(
+      "登出",
+      "確定要登出嗎？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "是", onPress: () => dispatch(authLogout()) }
+      ],
+      { cancelable: false }
+    );
+  }
 
   const MoreIcon = {uri:"https://cdn4.iconfinder.com/data/icons/pictype-free-vector-icons/16/more-512.png"};
   return (
@@ -175,7 +190,7 @@ var Airtable = require('airtable');
         
       }
       </ScrollView>
-      <View style={styles.accloginBtn}>
+      <View style={styles.acclogo}>
         <Button onPress={press} color="#ffffff" title="登出"/>
       </View>
     {/* <Provider>
