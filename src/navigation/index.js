@@ -22,6 +22,7 @@ function Home() {
     <Stack.Navigator>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="UpdateAlarm" component={UpdateAlarm} />
+      <Stack.Screen name="NewAlarm" component={NewAlarm} />
     </Stack.Navigator>
   );
 }
