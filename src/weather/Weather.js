@@ -1,3 +1,4 @@
+import { Card } from 'native-base';
 import React, {useState,useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
 import { colors } from 'react-native-elements';
@@ -11,6 +12,8 @@ const Weather = () => {
     const [info,setInfo] = useState({
         name : "loading",
         temp : "loading",
+        temp_min : "loading",
+        temp_max : "loading",
         humidity : "loading",
         desc : "loading",
         icon : "loadong"
@@ -25,6 +28,8 @@ const Weather = () => {
             setInfo({
                 name : results.name,
                 temp : results.main.temp,
+                temp_min : results.main.temp_min,
+                temp_max : results.main.temp_max,
                 humidity : results.main.humidity,
                 desc : results.weather[0].description,
                 icon : results.weather[0].icon
