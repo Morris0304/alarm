@@ -22,7 +22,7 @@ import { setStatusBarBackgroundColor } from 'expo-status-bar';
 import { colors } from 'react-native-elements';
 import { Size } from '@ui-kitten/components/devsupport';
 import OptionsMenu from "react-native-option-menu";
-import Airtable from 'airtable';
+import Airtable, { Record } from 'airtable';
 import UpdateAlarm from '../NewAlarm/UpdateAlarm';
 import { useDispatch, useSelector } from 'react-redux'
 import { authLogin, authLogout } from '../store/action/index'
@@ -44,13 +44,6 @@ var Airtable = require('airtable');
   const [alarm, setAlarm] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const [alarms, setAlarms] = useState({
-    Name:"",
-    Time:"",
-    Day:"",
-    Status:"",
-    Repeat:"",
-  });
 
   const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
 
@@ -76,43 +69,30 @@ var Airtable = require('airtable');
     fetchData();
   },[modalVisible]);
 
-  function update(){
-    setModalVisible(false);
-  }
-
   const onChange = (id) => {
+    //找到要改的那個switch的index(用id判斷)
     const findAlarmIndex = alarm.findIndex(item=>item.id === id)
+
+    //複製一份出來
     const temp = [...alarm]
-    temp[findAlarmIndex] = temp[findAlarmIndex].Status === 'ON' ? 'OFF' : 'ON'
-    console.log('temp', temp)
-    // setAlarm(temp)
+    //改那個switch的status 如果本來是ＯＮ改成ＯＦＦ 反之
+    temp[findAlarmIndex].fields.Status = temp[findAlarmIndex].fields.Status === 'ON' ? 'OFF' : 'ON'
+    setAlarm(temp)
+
+    base('alarm').update(id, {
+      "Status": temp[findAlarmIndex].fields.Status,
+    }, function(err, record) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(record.get('Status'));
+    });
   }
 
-  async function editAlarm(){
-    () => navigation.navigate('UpdateAlarm')
-    const id = "morris";
-    props.update(id)
 
-  }
-
-  function press(){
-    Alert.alert(
-      "登出",
-      "確定要登出嗎？",
-      [
-        {
-          text: "取消",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "登出", onPress: () => dispatch(authLogout()) }
-      ],
-      { cancelable: false }
-    );
-  }
-
-  async function deleteAlarm(){
-    console.log(selectedId)
+  async function deleteAlarm(id){
+    console.log('selectedId', id)
     Alert.alert(
       "刪除鬧鐘",
       "確定要刪除嗎？",
@@ -139,6 +119,22 @@ var Airtable = require('airtable');
   useEffect(()=>{
     console.log('alarm', alarm)
   }, [alarm])
+
+  function press(){
+    Alert.alert(
+      "登出",
+      "確定要登出嗎？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "是", onPress: () => dispatch(authLogout()) }
+      ],
+      { cancelable: false }
+    );
+  }
 
   const MoreIcon = {uri:"https://cdn4.iconfinder.com/data/icons/pictype-free-vector-icons/16/more-512.png"};
   return (
@@ -167,6 +163,7 @@ var Airtable = require('airtable');
               <Text style={styles.text}>{moment(item.fields.Time).format('H:mm')}</Text>
                 <Switch style={styles.switch}
                     trackColor={{ false: "#767577", true: "#fb5b5a" }}
+                    // 如果這個switch的狀態是on, color => f4f3f4
                     thumbColor={item.fields.Status === 'ON' ? "#f4f3f4" : "#f4f3f4"}
                     ios_backgroundColor="#3e3e3e"
                     onValueChange={()=>onChange(item.id)}
@@ -175,18 +172,16 @@ var Airtable = require('airtable');
                     key={item.fields.id}
                   />
                   <OptionsMenu
-                    onPress={()=> setSelectedId(item.id)}
                     button={MoreIcon}
-                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
+                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:270,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
-                    
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
-                    actions={[() => navigation.navigate('UpdateAlarm') , deleteAlarm]}
-                    onPress={()=> setSelectedId(item.id)}
+                    actions={[() => navigation.navigate('UpdateAlarm', {item }) , ()=>deleteAlarm(item.id)]}
                      />
                      
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
                   {/* <Text style={styles.text1}>{item.fields.Day}</Text> */}
+                  {/* <UpdateAlarm id={item.id}/> */}
               </Card>
               
               </TouchableOpacity>
@@ -195,7 +190,7 @@ var Airtable = require('airtable');
         
       }
       </ScrollView>
-      <View style={styles.acclogo}>
+      <View style={styles.acclogout}>
         <Button onPress={press} color="#ffffff" title="登出"/>
       </View>
     {/* <Provider>
