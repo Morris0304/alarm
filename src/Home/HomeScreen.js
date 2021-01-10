@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from '../styles';
 import {axios_config, url} from './config';
 import { FlatList, View, Text, Button, ImageBackground, Layout,  ScrollView, TouchableOpacity, Alert, Modal } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createStackNavigator, useCardAnimation } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -29,7 +29,7 @@ import { authLogin, authLogout } from '../store/action/index'
 
 
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({navigation,route}) {
 
   const dispatch = useDispatch()
   
@@ -40,7 +40,8 @@ console.warn('userId', userId)
 var Airtable = require('airtable');
   var base = new Airtable({apiKey: 'key7kYifU3zDRcM3K'}).base('apphKXGnHFSeqIixf');
   const get_url=url+"?maxRecords=50&view=Grid%20view";
-
+  
+  const [input, setInput] = useState(false);
   const [alarm, setAlarm] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -64,44 +65,33 @@ var Airtable = require('airtable');
       console.warn(result.data.records)
   }
 
+  // useFocusEffect(()=>{
+  //   fetchData();
+  //   setInput(true)
+  //   console.log("input",input)
+    
+  // },[modalVisible]);
   useEffect(() => {
     console.log("in useEffect");
     fetchData();
   },[modalVisible]);
 
-  function update(id){
-    // async function updateData(){
-    //   ?{records:[{
-    //     id: alarm.id,
-    //     fields:{
-    //       Name: alarm.fields.Name,
-    //       Repeat: alarm.fields.Repeat,
-    //       Time: alarm.fields.Time,
-    //       Day: alarm.fields.Day,
-    //       Status: alarm.fields.Status,
-
-    //     }
-    //   }]
-    //   }
-    //   :{fields:{
-    //       Name: alarm.fields.Name,
-    //       Repeat: alarm.fields.Repeat,
-    //       Time: alarm.fields.Time,
-    //       Day: alarm.fields.Day,
-    //       Status: alarm.fields.Status,
-    //   }}
-    // }
-
-    // base('alarm').update(selectedId, {
-    //   "Status": alarm.fields.Status,
-    // }, function(err, record) {
-    //   if (err) {
-    //     console.error(err);
-    //     return;
-    //   }
-    //   console.log(record.get('Status'));
-    // });
+  function press(){
+    Alert.alert(
+      "登出",
+      "確定要登出嗎？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "登出", onPress: () => dispatch(authLogout()) }
+      ],
+      { cancelable: false }
+    );
   }
+
 
   const onChange = (id) => {
     //找到要改的那個switch的index(用id判斷)
@@ -122,7 +112,6 @@ var Airtable = require('airtable');
       }
       console.log(record.get('Status'));
     });
-    update()
   }
 
 

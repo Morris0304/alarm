@@ -12,19 +12,19 @@ import { Switch, StyleSheet, StatusBar } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-native-paper';
 import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
-import {Card} from 'react-native-shadow-cards';
-import { AsyncStorage } from 'react-native';
 import styles from '../styles';
 import { Divider } from 'react-native-elements';
 import moment from "moment/moment";
+import { useSelector } from 'react-redux';
 
-export default function NewAlarm() {
+export default function NewAlarm({navigation}) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
   const [Name, setName] = useState("鬧鐘");
   const [Time, setTime] = useState('');
   const [TimeString, setTimeString] = useState('');
   const [Repeat, setRepeat] = useState("");
+  const userId = useSelector(state=>state.authReducer.userID);
 
   const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
 
@@ -65,7 +65,7 @@ export default function NewAlarm() {
     const time1 = moment(time).format('H:mm') //這邊把時間變成正確的
     console.log(time1)
     setTime(time1) 
-    const timeString = moment(time).format('YYYY-MM-DD HH:mm:ss');
+    const timeString = moment(time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss');
     setTimeString(timeString) //時間以字串方式儲存
     
     console.log(Time)
@@ -112,6 +112,7 @@ export default function NewAlarm() {
         weeks.push("六")
       }
       console.log([...weeks])
+      console.log(typeof userId)
       
     const newAlarm={
       fields:{
@@ -120,7 +121,7 @@ export default function NewAlarm() {
         Day:[...weeks],
         Time:TimeString,
         Status:"ON",
-        userId:"rec8116cdd76088af",
+        userId: userId,
       }
     }
     console.log(Time)
@@ -132,15 +133,19 @@ export default function NewAlarm() {
     try {
       const result = await axios.post(get_url,newAlarm, axios_config);
       // console.log(result);
-      props.update();
+      //props.update();
     }
     catch (e){
       console.log("error:"+e);
     }
+    console.log("to homescreen");
+    navigation.navigate('HomeScreen', {input: true})
+
 }
 
 function update(){
   sendData();
+
 }
 
   return(

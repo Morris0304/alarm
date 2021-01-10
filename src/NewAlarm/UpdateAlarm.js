@@ -12,26 +12,31 @@ import { Switch, StyleSheet, StatusBar } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-native-paper';
 import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
-import {Card} from 'react-native-shadow-cards';
-import { AsyncStorage } from 'react-native';
 import styles from '../styles';
 import { Divider } from 'react-native-elements';
 import moment from "moment/moment";
+import { useSelector } from 'react-redux';
 
 export default function UpdateAlarm(props) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
+  var Airtable = require('airtable');
+  var base = new Airtable({apiKey: 'keyL8TPVhwqWvqFfI'}).base('apphKXGnHFSeqIixf');
+
   const { item } = props.route.params
 
-  const [Name, setName] = useState("鬧鐘");
-  const [Time, setTime] = useState('');
+  const userId = useSelector(state=>state.authReducer.userID);
+  const [Name, setName] = useState(item.fields.Name);
+  const [Time, setTime] = useState(moment(item.fields.Time).format('H:mm'));
   const [TimeString, setTimeString] = useState('');
   const [Repeat, setRepeat] = useState("");
+  const [changeRepeat, setChangeRepeat] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
 
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  //const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
@@ -74,16 +79,9 @@ export default function UpdateAlarm(props) {
     // }
     // else{
     //   setRepeat("0");
-  })
+    // }
+  },[modalVisible])
 
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
   const showTimePicker = () => {
     setTimePickerVisibility(true);
   };
@@ -92,6 +90,24 @@ export default function UpdateAlarm(props) {
     setTimePickerVisibility(false);
   };
 
+  const toggleSwitch = () => {
+    
+    setIsEnabled(previousState => !previousState);
+    setInRepeat()
+
+  }
+
+  const setInRepeat = () =>{
+    if(isEnabled==true){
+      setRepeat("1");
+      }
+    else{
+       setRepeat("0");
+    }
+    console.log(Repeat)
+    setChangeRepeat(Repeat)
+  }
+
   const handleConfirmt = (time) => {
     // console.warn("A time has been picked: ", time);
     console.log(time) //這邊顯示的時間有問題
@@ -99,8 +115,9 @@ export default function UpdateAlarm(props) {
     console.log(time1)
     setTime(time1) 
     const timeString = moment(time).format('YYYY-MM-DD HH:mm:ss');
+    console.log("時間減8小",moment(time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
     setTimeString(timeString) //時間以字串方式儲存
-    
+
     console.log(Time)
     console.log(TimeString) 
     hideTimePicker();
@@ -114,6 +131,9 @@ export default function UpdateAlarm(props) {
   }
   
   async function sendData () {
+    console.log(item.id)
+    console.log(Name)
+    console.log(Repeat)
     const weeks = [];
       if(week[0] == true){
         weeks.push("日")
@@ -148,16 +168,31 @@ export default function UpdateAlarm(props) {
         // userId:["rec8116cdd76088af"],
       }
     }
-    console.log(Time)
+    console.log("時間",Time)
+    console.log("時間String",TimeString)
     // console.log(week)
     // alert(Name);
     // alert(Time);
     // alert(Repeat);
     //console.log(newPerson);
     try {
-      const result = await axios.post(get_url,newAlarm, axios_config);
+      base('alarm1').update(item.id, {
+        "Name":Name,
+        "Repeat":changeRepeat,
+        "Day":[...weeks],
+        "Time":TimeString,
+        "Status":"ON",
+        "userId":userId
+      }, function(err, record) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log(record.get('Status'));
+      });
+      // const result = await axios.post(get_url,newAlarm, axios_config);
       // console.log(result);
-      props.update();
+      // props.update();
     }
     catch (e){
       console.log("error:"+e);
@@ -192,7 +227,7 @@ function update(){
       
       <View style={{alignSelf:'center', flexDirection:'row'}}>
       <Text style={styles.NewAlarmChooseTimeView}>
-        {moment(item.fields.Time).format('H:mm')}
+        {Time}
         </Text>
      
       <Button title="選擇時間" onPress={showTimePicker} />
