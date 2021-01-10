@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
 
   text:{
-    fontWeight:'500', 
+    fontWeight:'bold', 
     fontSize:50,
     marginLeft:10
   },
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
       marginTop:"5%",
     },
     switch: {
-      marginLeft: 280, 
+      marginLeft: 260, 
       marginTop:-40,
     },
 
@@ -212,6 +212,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'flex-start',
       color:'#FFFFFF',
+    },
+    acclogout:{
+      fontWeight:"bold",
+      fontSize:50,
+      color:"#fb5b5a",
     }
   
   });

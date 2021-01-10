@@ -173,7 +173,7 @@ var Airtable = require('airtable');
                   />
                   <OptionsMenu
                     button={MoreIcon}
-                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
+                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:270,marginTop:10, resizeMode: "contain" }}
                     destructiveIndex={1}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
                     actions={[() => navigation.navigate('UpdateAlarm', {item }) , ()=>deleteAlarm(item.id)]}
@@ -190,7 +190,7 @@ var Airtable = require('airtable');
         
       }
       </ScrollView>
-      <View style={styles.acclogo}>
+      <View style={styles.acclogout}>
         <Button onPress={press} color="#ffffff" title="登出"/>
       </View>
     {/* <Provider>
