@@ -104,7 +104,7 @@ const Weather = () => {
     return(
         <ScrollView style={{backgroundColor:'#003f5c'}}>
         <View style={styles.weather}>
-            <View style={{flexDirection:'row', marginTop:80}}>
+            <View style={{flexDirection:'row', marginTop:50}}>
             <Image style={{width:20,height:20,marginTop:5}} 
             source={require('../img/location.png')}/>
             <Text style={{fontSize:30, color:'#FFFFFF', fontWeight:"bold"}}>  {currentInfo.name}</Text>
@@ -123,7 +123,7 @@ const Weather = () => {
             <Text style={{ color:'#FFFFFF' ,marginLeft:30}}>濕度：{currentInfo.humidity}%</Text>
             </View>
             </View>
-            <View style={{flexDirection:'row', marginTop:30,marginLeft:3}}>
+            <View style={{flexDirection:'row', marginTop:50,marginLeft:3}}>
                 <ProgressCircle
                 percent={currentInfo.temp_max}
                 radius={40}
@@ -170,7 +170,7 @@ const Weather = () => {
                 </ProgressCircle>
             </View>
 
-            <ScrollView horizontal={true} style={{marginTop:20, padding:10,margin:20}}>
+            <ScrollView horizontal={true} style={{marginTop:50, padding:10,margin:20}}>
             <View style={{flexDirection:'column',alignItems:'center'}}>
                 <Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>{moment(currentDateTime).format("H:mm")}</Text>
                 <Image 
