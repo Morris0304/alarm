@@ -45,6 +45,14 @@ var Airtable = require('airtable');
   const [alarm, setAlarm] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [refreshing,setRefreshing] = useState(false);
+
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    fetchData().then(() => setRefreshing(false));
+  }, []);
 
   const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
 
@@ -116,7 +124,7 @@ var Airtable = require('airtable');
 
 
   async function deleteAlarm(id){
-    console.log('selectedId', id)
+    console.warn('selectedId', id)
     Alert.alert(
       "刪除鬧鐘",
       "確定要刪除嗎？",
@@ -127,7 +135,7 @@ var Airtable = require('airtable');
           style: "cancel"
         },
         { text: "是", onPress: () =>  
-        base('alarm').destroy([selectedId], function(err, deletedRecords) {
+        base('alarm').destroy([id], function(err, deletedRecords) {
           if (err) {
             console.error(err);
             return;
@@ -137,7 +145,6 @@ var Airtable = require('airtable');
       ],
       { cancelable: false }
     );
-    console.warn('id',selectedId)
   }
 
   useEffect(()=>{
@@ -172,10 +179,12 @@ var Airtable = require('airtable');
       keyExtractor={(item, index) => ""+index}>
       </FlatList> */}
       
-      <ScrollView>
+      <ScrollView style={{backgroundColor:'#003f5c'}} 
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {
         alarm && alarm.map(( item )=>(
-          <TouchableOpacity onPress={()=> setSelectedId(item.id)}>
+          <TouchableOpacity>
             <Card style={{padding: 15, 
               margin: 10, 
               cornerRadius:30,
@@ -183,9 +192,8 @@ var Airtable = require('airtable');
               backgroundColor: 'rgba(1000, 1000, 1000, 0.9)', 
               borderRadius: 25}} keyExtractor={(item, index) => ""+index}
               key={item.fields.id}>
-                {/* <Icon name="alarm" style={{marginLeft:10}}><Text style={{fontSize:20, marginLeft:20}}>{item.fields.Name}</Text></Icon> */}
-              <Text style={styles.text}>{moment(item.fields.Time).format('H:mm')}</Text>
-                <Switch style={styles.switch}
+              <View style={{flexDirection:'row'}}><Icon name="alarm" style={{marginLeft:10}}/><Text style={{fontSize:15, marginTop:8}}>  {item.fields.Name}</Text></View>
+              <Switch style={styles.switch}
                     trackColor={{ false: "#767577", true: "#fb5b5a" }}
                     // 如果這個switch的狀態是on, color => f4f3f4
                     thumbColor={item.fields.Status === 'ON' ? "#f4f3f4" : "#f4f3f4"}
@@ -195,14 +203,15 @@ var Airtable = require('airtable');
                     keyExtractor={(item, index) => ""+index}
                     key={item.fields.id}
                   />
+              <Text style={styles.text}>{moment(item.fields.Time).format('H:mm')}</Text>
+              <Text style={{marginLeft:13,marginTop:5,color:'#fb5b5a'}}>{item.fields.Day}</Text>
                   <OptionsMenu
                     button={MoreIcon}
-                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:270,marginTop:10, resizeMode: "contain" }}
+                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:270,marginTop:-20, resizeMode: "contain" }}
                     destructiveIndex={1}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
                     actions={[() => navigation.navigate('UpdateAlarm', {item }) , ()=>deleteAlarm(item.id)]}
                      />
-                     
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
                   {/* <Text style={styles.text1}>{item.fields.Day}</Text> */}
                   {/* <UpdateAlarm id={item.id}/> */}

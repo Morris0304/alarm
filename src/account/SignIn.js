@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import {Button, View, Text, TextInput, Modal,FlatList, Alert } from 'react-native';
+import {Button, View, Text, TextInput, Modal,FlatList, Alert,ScrollView,RefreshControl } from 'react-native';
 import axios from 'axios';
 import styles from '../styles';
 import Home from '../Home/HomeScreen';
@@ -17,6 +17,14 @@ export default function SignIn({navigation,props}) {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [persons,setPersons] = useState([]);
+  const [refreshing,setRefreshing] = useState(false);
+
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    fetchData().then(() => setRefreshing(false));
+  }, []);
 
 
   const axios_config = {
@@ -28,6 +36,7 @@ export default function SignIn({navigation,props}) {
 
   async function fetchData () {
     const result = await axios.get(url,axios_config);
+    
     //console.log('result',result);      
     setPersons(result.data.records); 
   }
@@ -52,13 +61,8 @@ export default function SignIn({navigation,props}) {
 
   function compare(){
     if(acc.includes(ID)==true){
-      //console.log("acc",acc);
-      //console.log("ID",ID);
       var acc_index = acc.indexOf(ID);
-      //console.log("acc_index",acc_index);
       if(pass[acc_index]===password){
-        //console.log("pass[index]",pass[acc_index])
-        //console.log("pass",pass);
          return true
       }else
       { 
@@ -86,8 +90,11 @@ export default function SignIn({navigation,props}) {
     } 
    };
   return(
-     <View style={styles.accform}>
-
+    <ScrollView style={{backgroundColor:'#003f5c'}} 
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
+     <View style={styles.signform}>
      <Text style={styles.acclogo}> LOGIN </Text>
       <View style={styles.accinputView}>
       <TextInput
@@ -128,7 +135,7 @@ export default function SignIn({navigation,props}) {
         color="#ffffff"
         />
     </View>
-    
+    </ScrollView>
   )
   
 }
