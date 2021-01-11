@@ -170,7 +170,13 @@ const styles = StyleSheet.create({
       marginLeft: 260, 
       marginTop:-40,
     },
-
+    signform: {
+      flex: 1,
+      top:230,
+      backgroundColor: '#003f5c',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     accform: {
       flex: 1,
       backgroundColor: '#003f5c',
