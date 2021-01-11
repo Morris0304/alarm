@@ -16,6 +16,7 @@ import styles from '../styles';
 import { Divider } from 'react-native-elements';
 import moment from "moment/moment";
 import { useSelector } from 'react-redux';
+import HomeScreen from '../Home/HomeScreen';
 
 export default function UpdateAlarm(props) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
