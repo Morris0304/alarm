@@ -53,6 +53,7 @@ export default function SignUp({props,navigation}) {
     try {
         const result = await axios.post(url,newPerson, axios_config);
         console.log(result);
+        props.update();
     }
     catch (e){
       console.log("error:"+e);
