@@ -45,6 +45,14 @@ var Airtable = require('airtable');
   const [alarm, setAlarm] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [refreshing,setRefreshing] = useState(false);
+
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    fetchData().then(() => setRefreshing(false));
+  }, []);
 
   const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
 
@@ -172,7 +180,9 @@ var Airtable = require('airtable');
       keyExtractor={(item, index) => ""+index}>
       </FlatList> */}
       
-      <ScrollView>
+      <ScrollView style={{backgroundColor:'#003f5c'}} 
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {
         alarm && alarm.map(( item )=>(
           <TouchableOpacity onPress={()=> setSelectedId(item.id)}>
