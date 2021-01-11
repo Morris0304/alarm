@@ -192,9 +192,8 @@ var Airtable = require('airtable');
               backgroundColor: 'rgba(1000, 1000, 1000, 0.9)', 
               borderRadius: 25}} keyExtractor={(item, index) => ""+index}
               key={item.fields.id}>
-                {/* <Icon name="alarm" style={{marginLeft:10}}><Text style={{fontSize:20, marginLeft:20}}>{item.fields.Name}</Text></Icon> */}
-              <Text style={styles.text}>{moment(item.fields.Time).format('H:mm')}</Text>
-                <Switch style={styles.switch}
+              <View style={{flexDirection:'row'}}><Icon name="alarm" style={{marginLeft:10}}/><Text style={{fontSize:15, marginTop:8}}>  {item.fields.Name}</Text></View>
+              <Switch style={styles.switch}
                     trackColor={{ false: "#767577", true: "#fb5b5a" }}
                     // 如果這個switch的狀態是on, color => f4f3f4
                     thumbColor={item.fields.Status === 'ON' ? "#f4f3f4" : "#f4f3f4"}
@@ -204,14 +203,15 @@ var Airtable = require('airtable');
                     keyExtractor={(item, index) => ""+index}
                     key={item.fields.id}
                   />
+              <Text style={styles.text}>{moment(item.fields.Time).format('H:mm')}</Text>
+              <Text style={{marginLeft:13,marginTop:5,color:'#fb5b5a'}}>{item.fields.Day}</Text>
                   <OptionsMenu
                     button={MoreIcon}
-                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:270,marginTop:10, resizeMode: "contain" }}
+                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:270,marginTop:-20, resizeMode: "contain" }}
                     destructiveIndex={1}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
                     actions={[() => navigation.navigate('UpdateAlarm', {item }) , ()=>deleteAlarm(item.id)]}
                      />
-                     
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
                   {/* <Text style={styles.text1}>{item.fields.Day}</Text> */}
                   {/* <UpdateAlarm id={item.id}/> */}

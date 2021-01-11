@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
   text:{
     fontWeight:'bold', 
     fontSize:50,
-    marginLeft:10
+    marginLeft:10,
+    marginTop:-15
   },
   text1:{
     fontSize:20,
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     },
     switch: {
       marginLeft: 260, 
-      marginTop:-40,
+      marginTop:-20
     },
     signform: {
       flex: 1,
