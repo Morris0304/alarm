@@ -26,8 +26,9 @@ export default function UpdateAlarm(props) {
   const { item } = props.route.params
 
   const userId = useSelector(state=>state.authReducer.userID);
-  const [Name, setName] = useState(item.fields.Name);
-  const [Time, setTime] = useState(moment(item.fields.Time).format('H:mm'));
+  const [Name, setName] = useState("");
+  const [Time, setTime] = useState(item.fields.Time);
+  const [showTime,setShowTime] = useState(moment(item.fields.Time).format('H:mm'));
   const [TimeString, setTimeString] = useState('');
   const [Repeat, setRepeat] = useState("");
   const [changeRepeat, setChangeRepeat] = useState("");
@@ -75,6 +76,10 @@ export default function UpdateAlarm(props) {
     else{
         setIsEnabled(false)
     }
+    setName(item.fields.Name)
+    console.log(item.fields.Time)
+    setTimeString(moment(item.fields.Time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
+    console.log("TimeString",TimeString)
     // if(isEnabled==true){
     //   setRepeat("1");
     // }
@@ -111,16 +116,16 @@ export default function UpdateAlarm(props) {
 
   const handleConfirmt = (time) => {
     // console.warn("A time has been picked: ", time);
+
     console.log(time) //這邊顯示的時間有問題
     const time1 = moment(time).format('H:mm') //這邊把時間變成正確的
     console.log(time1)
-    setTime(time1) 
+    setShowTime(time1) 
     const timeString = moment(time).format('YYYY-MM-DD HH:mm:ss');
     console.log("時間減8小",moment(time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
     setTimeString(timeString) //時間以字串方式儲存
-
-    console.log(Time)
     console.log(TimeString) 
+    
     hideTimePicker();
   };
 
@@ -221,14 +226,14 @@ function update(){
         style={styles.inputStyle}
         placeholderTextColor="#003f5c"
         placeholder="鬧鐘名"
-        value={item.fields.Name}
+        value={Name}
         onChangeText={text=>setName(text)}
       /> 
       </View>
       
       <View style={{alignSelf:'center', flexDirection:'row'}}>
       <Text style={styles.NewAlarmChooseTimeView}>
-        {Time}
+        {showTime}
         </Text>
      
       <Button title="選擇時間" onPress={showTimePicker} />
