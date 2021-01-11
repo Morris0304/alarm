@@ -92,8 +92,7 @@ export default function SignIn({navigation,props}) {
   return(
     <ScrollView style={{backgroundColor:'#003f5c'}} 
     refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
      <View style={styles.signform}>
      <Text style={styles.acclogo}> LOGIN </Text>
       <View style={styles.accinputView}>
