@@ -68,6 +68,7 @@ export default function UpdateAlarm(props) {
         }
         setWeeks(weeks)
     }
+    console.log(weeks)
     if(item.fields.Repeat=="1"){
         setIsEnabled(true)
     }
