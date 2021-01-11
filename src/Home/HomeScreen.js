@@ -180,8 +180,7 @@ var Airtable = require('airtable');
       </FlatList> */}
       
       <ScrollView style={{backgroundColor:'#003f5c'}} 
-    refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {
         alarm && alarm.map(( item )=>(
           <TouchableOpacity>
