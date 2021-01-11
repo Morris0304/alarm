@@ -52,13 +52,8 @@ export default function SignIn({navigation,props}) {
 
   function compare(){
     if(acc.includes(ID)==true){
-      //console.log("acc",acc);
-      //console.log("ID",ID);
       var acc_index = acc.indexOf(ID);
-      //console.log("acc_index",acc_index);
       if(pass[acc_index]===password){
-        //console.log("pass[index]",pass[acc_index])
-        //console.log("pass",pass);
          return true
       }else
       { 

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Button, View, Text, TextInput,Navigator,Modal,Alert} from 'react-native';
+import React, {useState,useEffect} from 'react';
+import {Button, View, Text, TextInput,Navigator,Alert,FlatList} from 'react-native';
 import axios from 'axios';
 import styles from '../styles';
 import SignIn from './SignIn';
@@ -12,7 +12,7 @@ const alertErrorMessage = '註冊失敗，請重新輸入！';
 
 export default function SignUp({props,navigation}) {
 
-
+  const [persons,setPersons] = useState([]);
   const [ID, setID] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,6 +23,15 @@ export default function SignUp({props,navigation}) {
           'Content-Type': 'application/json'}
       };
       const url="https://api.airtable.com/v0/apphKXGnHFSeqIixf/user"; 
+
+      async function fetchData () {
+        const result = await axios.get(url,axios_config);
+        //console.log('result',result);      
+        setPersons(result.data.records); 
+      }
+      useEffect(() => {
+        fetchData();
+      },[]);
 
   
   async function sendData () {
@@ -44,21 +53,42 @@ export default function SignUp({props,navigation}) {
     try {
         const result = await axios.post(url,newPerson, axios_config);
         console.log(result);
-        //setPersons(result.data.records);
-        props.update();
     }
     catch (e){
       console.log("error:"+e);
     }
 }
-function Press(){
-  ID && password != null ? sendData():Alert.alert(
-    '註冊失敗',
-    alertErrorMessage,
-    [
-      {text: 'OK', onPress: () => console.log('OK Pressed!')},
-    ]
+
+let acc=[];
+const renderItem = ({ item,index }) => {
+  acc.push(item.fields.ID);
+  return (
+    <View>
+    <Text>{index}</Text>
+    <Text style={styles.title}>{item.fields.ID}</Text>
+    </View>
   )
+};
+
+function compare(){
+  if(acc.includes(ID)){
+    return false;
+  }return true;
+}
+
+function Press(){
+  const res = compare();
+  if((res == true) &&(ID && password != null)){
+    sendData();
+  }else{
+    Alert.alert(
+      '註冊失敗',
+      alertErrorMessage,
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed!')},
+      ]
+    )
+  }
   
   setID("");
   setPassword("");
@@ -66,7 +96,7 @@ function Press(){
 }
   
   return(
-    <View style={styles.accform}> 
+    <View style={styles.accform}>
     <Text style={styles.acclogo}> SIGNUP </Text>
     <View style={styles.accinputView}>
     <TextInput style={styles.accinputStyle}
@@ -74,7 +104,12 @@ function Press(){
      placeholder="帳號"
      value={ID} 
      onChangeText={text=>setID(text)}/></View>
-    <View style={styles.accinputView}>
+    <View style={styles.accinputView}> 
+    <FlatList 
+    data={persons} 
+    renderItem = {renderItem}
+    keyExtractor={(item, index) => ""+index}
+    ></FlatList>
     <TextInput style={styles.accinputStyle}
     placeholderTextColor="#003f5c" 
     placeholder="密碼" 
