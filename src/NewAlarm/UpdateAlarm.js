@@ -18,7 +18,7 @@ import moment from "moment/moment";
 import { useSelector } from 'react-redux';
 import HomeScreen from '../Home/HomeScreen';
 
-export default function UpdateAlarm(props) {
+export default function UpdateAlarm(props,{navigation}) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
   var Airtable = require('airtable');
@@ -77,6 +77,7 @@ export default function UpdateAlarm(props) {
     else{
         setIsEnabled(false)
     }
+    setRepeat(item.fields.Repeat)
     setName(item.fields.Name)
     console.log(item.fields.Time)
     setTimeString(moment(item.fields.Time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
@@ -122,8 +123,8 @@ export default function UpdateAlarm(props) {
     const time1 = moment(time).format('H:mm') //這邊把時間變成正確的
     console.log(time1)
     setShowTime(time1) 
-    const timeString = moment(time).format('YYYY-MM-DD HH:mm:ss');
-    console.log("時間減8小",moment(time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
+    const timeString = moment(time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss');
+    console.log("時間減8小",moment(time).subtract(16,'hours').format('YYYY-MM-DD HH:mm:ss'))
     setTimeString(timeString) //時間以字串方式儲存
     console.log(TimeString) 
     
@@ -204,6 +205,7 @@ export default function UpdateAlarm(props) {
     catch (e){
       console.log("error:"+e);
     }
+    navigation.navigate('HomeScreen')
 }
 
 function update(){
@@ -313,7 +315,7 @@ function update(){
         </View>
 
         <View style={styles.NewAlarmInputBtn}>
-          <Button color="white" title="新增" onPress={update}/>
+          <Button color="white" title="修改" onPress={update}/>
           </View>
       
     </View>

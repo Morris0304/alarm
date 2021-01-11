@@ -29,7 +29,7 @@ import { authLogin, authLogout } from '../store/action/index'
 
 
 
-export default function HomeScreen({navigation,route}) {
+export default function HomeScreen({navigation}) {
 
   const dispatch = useDispatch();
   
