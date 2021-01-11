@@ -124,7 +124,7 @@ var Airtable = require('airtable');
 
 
   async function deleteAlarm(id){
-    console.log('selectedId', id)
+    console.warn('selectedId', id)
     Alert.alert(
       "刪除鬧鐘",
       "確定要刪除嗎？",
@@ -135,7 +135,7 @@ var Airtable = require('airtable');
           style: "cancel"
         },
         { text: "是", onPress: () =>  
-        base('alarm').destroy([selectedId], function(err, deletedRecords) {
+        base('alarm').destroy([id], function(err, deletedRecords) {
           if (err) {
             console.error(err);
             return;
@@ -145,7 +145,6 @@ var Airtable = require('airtable');
       ],
       { cancelable: false }
     );
-    console.warn('id',selectedId)
   }
 
   useEffect(()=>{
@@ -185,7 +184,7 @@ var Airtable = require('airtable');
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {
         alarm && alarm.map(( item )=>(
-          <TouchableOpacity onPress={()=> setSelectedId(item.id)}>
+          <TouchableOpacity>
             <Card style={{padding: 15, 
               margin: 10, 
               cornerRadius:30,
