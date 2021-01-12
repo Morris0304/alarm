@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {axios_config, url} from './config';
-import { View, Text, Button, ImageBackground, Layout ,TextInput} from 'react-native';
+import { View, Text, Button, ImageBackground, Layout ,TextInput , Alert} from 'react-native';
 import {CheckBox} from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
@@ -17,7 +17,9 @@ import { Divider } from 'react-native-elements';
 import moment from "moment/moment";
 import { useSelector } from 'react-redux';
 
-export default function UpdateAlarm(props) {
+const alertMessage = "";
+
+export default function UpdateAlarm(props,{navigation}) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
   var Airtable = require('airtable');
@@ -26,8 +28,9 @@ export default function UpdateAlarm(props) {
   const { item } = props.route.params
 
   const userId = useSelector(state=>state.authReducer.userID);
-  const [Name, setName] = useState(item.fields.Name);
-  const [Time, setTime] = useState(moment(item.fields.Time).format('H:mm'));
+  const [Name, setName] = useState("");
+  const [Time, setTime] = useState(item.fields.Time);
+  const [showTime,setShowTime] = useState(moment(item.fields.Time).format('H:mm'));
   const [TimeString, setTimeString] = useState('');
   const [Repeat, setRepeat] = useState("");
   const [changeRepeat, setChangeRepeat] = useState("");
@@ -68,12 +71,18 @@ export default function UpdateAlarm(props) {
         }
         setWeeks(weeks)
     }
+    console.log(weeks)
     if(item.fields.Repeat=="1"){
         setIsEnabled(true)
     }
     else{
         setIsEnabled(false)
     }
+    setRepeat(item.fields.Repeat)
+    setName(item.fields.Name)
+    console.log(item.fields.Time)
+    setTimeString(moment(item.fields.Time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
+    console.log("TimeString",TimeString)
     // if(isEnabled==true){
     //   setRepeat("1");
     // }
@@ -110,16 +119,16 @@ export default function UpdateAlarm(props) {
 
   const handleConfirmt = (time) => {
     // console.warn("A time has been picked: ", time);
+
     console.log(time) //這邊顯示的時間有問題
     const time1 = moment(time).format('H:mm') //這邊把時間變成正確的
     console.log(time1)
-    setTime(time1) 
-    const timeString = moment(time).format('YYYY-MM-DD HH:mm:ss');
-    console.log("時間減8小",moment(time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
+    setShowTime(time1) 
+    const timeString = moment(time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss');
+    console.log("時間減8小",moment(time).subtract(16,'hours').format('YYYY-MM-DD HH:mm:ss'))
     setTimeString(timeString) //時間以字串方式儲存
-
-    console.log(Time)
     console.log(TimeString) 
+    
     hideTimePicker();
   };
 
@@ -197,10 +206,19 @@ export default function UpdateAlarm(props) {
     catch (e){
       console.log("error:"+e);
     }
+    //navigation.navigate('HomeScreen')
 }
 
 function update(){
   sendData();
+  Alert.alert(
+    '修改完成！',
+    alertMessage,
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed!')},
+    ]
+  )
+  
 }
 
   return(
@@ -220,14 +238,14 @@ function update(){
         style={styles.inputStyle}
         placeholderTextColor="#003f5c"
         placeholder="鬧鐘名"
-        value={item.fields.Name}
+        value={Name}
         onChangeText={text=>setName(text)}
       /> 
       </View>
       
       <View style={{alignSelf:'center', flexDirection:'row'}}>
       <Text style={styles.NewAlarmChooseTimeView}>
-        {Time}
+        {showTime}
         </Text>
      
       <Button title="選擇時間" onPress={showTimePicker} />
@@ -306,7 +324,7 @@ function update(){
         </View>
 
         <View style={styles.NewAlarmInputBtn}>
-          <Button color="white" title="新增" onPress={update}/>
+          <Button color="white" title="修改" onPress={update}/>
           </View>
       
     </View>
