@@ -3,6 +3,13 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, Button, Platform } from 'react-native';
+import not from './src/Home/notification';
+
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -76,6 +83,10 @@ export default function App() {
           await sendPushNotification(expoPushToken);
         }}
       />
+      {/* <Tab.Navigator>
+      <Tab.Screen name="not" component={not} />
+      </Tab.Navigator> */}
+      
     </View>
   );
 }

@@ -42,6 +42,14 @@ Notifications.scheduleNotificationAsync({
     
 
 export default function App() {
+    
+    // 取得時間
+    const moment = require('moment');
+    // const currentDateTime = moment().format('YYYY/MM/DD HH:mm:ss');
+    const currentDateTime = moment().format('HH:mm:ss');
+    console.log(currentDateTime);
+
+
     const get_url=url+"?maxRecords=50&view=Grid%20view";
 
     const [alarm, setAlarm] = useState([]);
@@ -62,6 +70,9 @@ export default function App() {
 
     useEffect(() => {
       fetchData();
+    //   if (currentDateTime === alarm.Time){
+
+    //   }
     },[modalVisible]);
     
     function update(){
