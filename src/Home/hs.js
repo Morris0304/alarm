@@ -14,6 +14,7 @@ import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-nativ
 import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
 import {Card} from 'react-native-shadow-cards';
 import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import moment from 'moment/moment';
 import NewAlarm from '../NewAlarm/NewAlarm';
@@ -25,7 +26,7 @@ import Airtable, { Record } from 'airtable';
 import UpdateAlarm from '../NewAlarm/UpdateAlarm';
 import { useDispatch, useSelector } from 'react-redux'
 import { authLogin, authLogout } from '../store/action/index'
-import Notifications from './notification'
+import Notification from './notification'
 
 
 export default function HomeScreen({navigation}) {
@@ -36,7 +37,7 @@ export default function HomeScreen({navigation}) {
 
   console.warn('userId', userId);
 
-var Airtable = require('airtable');
+  var Airtable = require('airtable');
   var base = new Airtable({apiKey: 'key7kYifU3zDRcM3K'}).base('apphKXGnHFSeqIixf');
   const get_url=url+"?maxRecords=50&view=Grid%20view";
   
@@ -45,6 +46,7 @@ var Airtable = require('airtable');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [refreshing,setRefreshing] = useState(false);
+  const [alarmNotice, setAlarmNotice] = useState();
   
 
 
@@ -64,6 +66,7 @@ var Airtable = require('airtable');
 
   async function fetchData () {
       const result = await axios.get(get_url,axios_config);
+
       const userAlarm = [];
       for(i=0;i<result.data.records.length;i++){
         if(result.data.records[i].fields.userId == userId){
@@ -77,10 +80,36 @@ var Airtable = require('airtable');
       //console.warn(result.data.records)
   }
 
+  async function fetchData_alarm () {
+    const result = await axios.get(get_url,axios_config);
+    setAlarmNotice(result.data.records);
+    //setDate(alarm.fields.Time);
+
+}
+
   useEffect(() => {
     console.log("in useEffect");
     fetchData();
-  },[modalVisible]);
+    fetchData_alarm();
+    
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    // 取得時間
+    const moment = require('moment');
+    const currentDateTime = moment().format('HH:mm');
+
+    for (i=0;i<alarmNotice.length;i++){
+        if(moment(alarmNotice[i].fields.Time).format('HH:mm') == currentDateTime){
+        
+            sendPushNotification()
+            // gogo()
+            
+            console.log("響")
+        } 
+    }
+   
+    console.log("123")
+  });
 
   function press(){
     Alert.alert(
@@ -220,4 +249,62 @@ var Airtable = require('airtable');
     </View>
     
   );
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+        soundName: './ring1.mp3',
+    }),
+});
+
+async function sendPushNotification(expoPushToken) {
+    console.log('來了')
+
+    Notifications.scheduleNotificationAsync({
+            content: {
+              title: "鬧鐘",
+              body: '時間到！！！',
+              sound: 'default',
+            },
+            trigger: {
+                seconds: 5,
+            
+             },
+    });
+    console.log('哈哈')
+}
+  
+async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        //console.log('token:',token);
+    } 
+    else {
+        alert('Must use physical device for Push Notifications');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+  }
 }

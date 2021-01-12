@@ -12,6 +12,7 @@ import NewAlarm from '../NewAlarm/NewAlarm';
 import SignUp from '../account/SignUp';
 import SignIn from '../account/SignIn';
 import UpdateAlarm from '../NewAlarm/UpdateAlarm';
+import notification from '../Home/notification';
 import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
@@ -48,6 +49,7 @@ function Sign() {
     <Stack.Navigator screenOptions={{headerShown: false}} >
     <Stack.Screen name="SignIn" component={SignIn} />
     <Stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Screen name="notification" component={notification}/>
   </Stack.Navigator>
   );
 }
@@ -88,6 +90,7 @@ const TabStack = () =>{
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="New" component={newAlarm} />
         <Tab.Screen name="weather" component={weather} />
+        {/* <Tab.Screen name="test" component={test} /> */}
       </Tab.Navigator>
     );
   }
