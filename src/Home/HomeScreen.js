@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from '../styles';
 import {axios_config, url} from './config';
 import { FlatList, View, Text, Button, ImageBackground, Layout,  ScrollView, TouchableOpacity, Alert, Modal } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createStackNavigator, useCardAnimation } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -31,19 +31,28 @@ import { authLogin, authLogout } from '../store/action/index'
 
 export default function HomeScreen({navigation}) {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   
-const userId = useSelector(state=>state.authReducer.userID)
+  const userId = useSelector(state=>state.authReducer.userID);
 
-console.warn('userId', userId)
+  console.warn('userId', userId);
 
 var Airtable = require('airtable');
   var base = new Airtable({apiKey: 'key7kYifU3zDRcM3K'}).base('apphKXGnHFSeqIixf');
   const get_url=url+"?maxRecords=50&view=Grid%20view";
-
+  
+  const [input, setInput] = useState(false);
   const [alarm, setAlarm] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [refreshing,setRefreshing] = useState(false);
+
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    fetchData().then(() => setRefreshing(false));
+  }, []);
 
   const image = { uri: "https://uploadfile.bizhizu.cn/up/5b/0d/0f/5b0d0f26cf2f9cdce9abe4422cc5aac9.jpg" };
 
@@ -64,10 +73,32 @@ var Airtable = require('airtable');
       console.warn(result.data.records)
   }
 
+  // useFocusEffect(()=>{
+  //   fetchData();
+  //   setInput(true)
+  //   console.log("input",input)
+    
+  // },[modalVisible]);
   useEffect(() => {
     console.log("in useEffect");
     fetchData();
   },[modalVisible]);
+
+  function press(){
+    Alert.alert(
+      "登出",
+      "確定要登出嗎？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "登出", onPress: () => dispatch(authLogout()) }
+      ],
+      { cancelable: false }
+    );
+  }
 
 
   const onChange = (id) => {
@@ -89,12 +120,11 @@ var Airtable = require('airtable');
       }
       console.log(record.get('Status'));
     });
-    update()
   }
 
 
   async function deleteAlarm(id){
-    console.log('selectedId', id)
+    console.warn('selectedId', id)
     Alert.alert(
       "刪除鬧鐘",
       "確定要刪除嗎？",
@@ -105,7 +135,7 @@ var Airtable = require('airtable');
           style: "cancel"
         },
         { text: "是", onPress: () =>  
-        base('alarm').destroy([selectedId], function(err, deletedRecords) {
+        base('alarm').destroy([id], function(err, deletedRecords) {
           if (err) {
             console.error(err);
             return;
@@ -115,12 +145,27 @@ var Airtable = require('airtable');
       ],
       { cancelable: false }
     );
-    console.warn('id',selectedId)
   }
 
   useEffect(()=>{
     console.log('alarm', alarm)
   }, [alarm])
+
+  function press(){
+    Alert.alert(
+      "登出",
+      "確定要登出嗎？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "是", onPress: () => dispatch(authLogout()) }
+      ],
+      { cancelable: false }
+    );
+  }
 
   const MoreIcon = {uri:"https://cdn4.iconfinder.com/data/icons/pictype-free-vector-icons/16/more-512.png"};
   return (
@@ -134,10 +179,12 @@ var Airtable = require('airtable');
       keyExtractor={(item, index) => ""+index}>
       </FlatList> */}
       
-      <ScrollView>
+      <ScrollView style={{backgroundColor:'#003f5c'}} 
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {
         alarm && alarm.map(( item )=>(
-          <TouchableOpacity onPress={()=> setSelectedId(item.id)}>
+          <TouchableOpacity>
             <Card style={{padding: 15, 
               margin: 10, 
               cornerRadius:30,
@@ -145,9 +192,8 @@ var Airtable = require('airtable');
               backgroundColor: 'rgba(1000, 1000, 1000, 0.9)', 
               borderRadius: 25}} keyExtractor={(item, index) => ""+index}
               key={item.fields.id}>
-                {/* <Icon name="alarm" style={{marginLeft:10}}><Text style={{fontSize:20, marginLeft:20}}>{item.fields.Name}</Text></Icon> */}
-              <Text style={styles.text}>{moment(item.fields.Time).format('H:mm')}</Text>
-                <Switch style={styles.switch}
+              <View style={{flexDirection:'row'}}><Icon name="alarm" style={{marginLeft:10}}/><Text style={{fontSize:15, marginTop:8}}>  {item.fields.Name}</Text></View>
+              <Switch style={styles.switch}
                     trackColor={{ false: "#767577", true: "#fb5b5a" }}
                     // 如果這個switch的狀態是on, color => f4f3f4
                     thumbColor={item.fields.Status === 'ON' ? "#f4f3f4" : "#f4f3f4"}
@@ -157,14 +203,15 @@ var Airtable = require('airtable');
                     keyExtractor={(item, index) => ""+index}
                     key={item.fields.id}
                   />
+              <Text style={styles.text}>{moment(item.fields.Time).format('H:mm')}</Text>
+              <Text style={{marginLeft:13,marginTop:5,color:'#fb5b5a'}}>{item.fields.Day}</Text>
                   <OptionsMenu
                     button={MoreIcon}
-                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:290,marginTop:10, resizeMode: "contain" }}
+                    buttonStyle={{ width: 40, height: 28, margin: 7.5, marginLeft:270,marginTop:-20, resizeMode: "contain" }}
                     destructiveIndex={1}
                     options={["編輯鬧鐘", "刪除鬧鐘", "取消"]}
                     actions={[() => navigation.navigate('UpdateAlarm', {item }) , ()=>deleteAlarm(item.id)]}
                      />
-                     
                    {/* <Text>{switchValue ? 'Switch is ON' : 'Switch is OFF'}</Text> */}
                   {/* <Text style={styles.text1}>{item.fields.Day}</Text> */}
                   {/* <UpdateAlarm id={item.id}/> */}
@@ -176,7 +223,7 @@ var Airtable = require('airtable');
         
       }
       </ScrollView>
-      {/* <View style={styles.accloginBtn}>
+      {/*<View style={styles.acclogout}>
         <Button onPress={press} color="#ffffff" title="登出"/>
       </View> */}
     {/* <Provider>

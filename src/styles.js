@@ -18,9 +18,10 @@ const styles = StyleSheet.create({
   },
 
   text:{
-    fontWeight:'500', 
+    fontWeight:'bold', 
     fontSize:50,
-    marginLeft:10
+    marginLeft:10,
+    marginTop:-15
   },
   text1:{
     fontSize:20,
@@ -167,10 +168,16 @@ const styles = StyleSheet.create({
       marginTop:"5%",
     },
     switch: {
-      marginLeft: 280, 
-      marginTop:-40,
+      marginLeft: 260, 
+      marginTop:-20
     },
-
+    signform: {
+      flex: 1,
+      top:230,
+      backgroundColor: '#003f5c',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     accform: {
       flex: 1,
       backgroundColor: '#003f5c',
@@ -206,6 +213,18 @@ const styles = StyleSheet.create({
       color:"#fb5b5a",
       marginBottom:40
     },
+    weather:{
+      flex: 1,
+      backgroundColor: '#003f5c',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      color:'#FFFFFF',
+    },
+    acclogout:{
+      fontWeight:"bold",
+      fontSize:50,
+      color:"#fb5b5a",
+    }
   
   });
 
