@@ -3,6 +3,8 @@ import { StyleSheet, View, Button, Text } from 'react-native';
 import AlarmClock from 'react-native-alarm-clock';
 import {axios_config, url} from './config';
 import axios from 'axios';
+import * as Notifications from 'expo-notifications';
+
 
 // const create = () => {
 //   let date = new Date();
@@ -22,6 +24,19 @@ import axios from 'axios';
 //     AlarmClock.createAlarm(date.toISOString(), 'My Custom Alarm');
     
 //   };
+
+Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Time's up!",
+      body: 'Change sides!',
+      sound: 'default',
+    },
+    trigger: {
+      seconds: 10,
+      //repeats: true
+    },
+  });
+
 
 
     
@@ -45,8 +60,6 @@ export default function App() {
 
     }
 
-
-    
     useEffect(() => {
       fetchData();
     },[modalVisible]);
