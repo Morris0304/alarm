@@ -50,25 +50,25 @@ export default function UpdateAlarm(props,{navigation}) {
   useEffect(()=>{
     for(i=0;i<item.fields.Day.length;i++){
         if(item.fields.Day[i]=="一"){
-            weeks[1]=true
+            week[1]=true
         }
         if(item.fields.Day[i]=="二"){
-            weeks[2]=true
+            week[2]=true
         }
         if(item.fields.Day[i]=="三"){
-            weeks[3]=true
+            week[3]=true
         }
         if(item.fields.Day[i]=="四"){
-            weeks[4]=true
+            week[4]=true
         }
         if(item.fields.Day[i]=="五"){
-            weeks[5]=true
+            week[5]=true
         }
         if(item.fields.Day[i]=="六"){
-            weeks[6]=true
+            week[6]=true
         }
         if(item.fields.Day[i]=="日"){
-            weeks[0]=true
+            week[0]=true
         }
         setWeeks(weeks)
     }
@@ -295,31 +295,31 @@ function update(){
        
        <View style={{flexDirection:'row', alignSelf:'center'}}>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[1]} color="#fc5185" onPress={() => handleCheck(1)}/>
+          <CheckBox checked={week[1]} color="#fc5185" onPress={() => handleCheck(1)}/>
           <Text style={styles.checkboxText}>星期一</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[2]} color="#fc5185" onPress={() => handleCheck(2)}/>
+          <CheckBox checked={week[2]} color="#fc5185" onPress={() => handleCheck(2)}/>
           <Text style={styles.checkboxText}>星期二</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[3]} color="#fc5185" onPress={() => handleCheck(3)}/>
+          <CheckBox checked={week[3]} color="#fc5185" onPress={() => handleCheck(3)}/>
           <Text style={styles.checkboxText}>星期三</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[4]} color="#fc5185" onPress={() => handleCheck(4)}/>
+          <CheckBox checked={week[4]} color="#fc5185" onPress={() => handleCheck(4)}/>
           <Text style={styles.checkboxText}>星期四</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[5]} color="#fc5185" onPress={() => handleCheck(5)}/>
+          <CheckBox checked={week[5]} color="#fc5185" onPress={() => handleCheck(5)}/>
           <Text style={styles.checkboxText}>星期五</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[6]} color="#fc5185" onPress={() => handleCheck(6)}/>
+          <CheckBox checked={week[6]} color="#fc5185" onPress={() => handleCheck(6)}/>
           <Text style={styles.checkboxText}>星期六</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[0]} color="#fc5185" onPress={() => handleCheck(0)}/>
+          <CheckBox checked={week[0]} color="#fc5185" onPress={() => handleCheck(0)}/>
           <Text style={styles.checkboxText}>星期日</Text>
         </View>
         </View>
