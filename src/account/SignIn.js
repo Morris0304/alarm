@@ -78,7 +78,7 @@ export default function SignIn({navigation,props}) {
         dispatch(setuserID(ID))
         dispatch(authLogin())
       }else{
-        Alert.alert('登入失敗！',alertMessage,[{text: 'OK', onPress: () => console.log('OK Pressed!')},]);
+        Alert.alert('登入失敗！',alertMessage,[{text: 'OK', onPress: () => console.log('OK Pressed!')}]);
       }
       setID("");
       setPassword("");

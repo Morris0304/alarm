@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {axios_config, url} from './config';
-import { View, Text, Button, ImageBackground, Layout ,TextInput} from 'react-native';
+import { View, Text, Button, ImageBackground, Layout ,TextInput , Alert} from 'react-native';
 import {CheckBox} from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
@@ -17,6 +17,8 @@ import { Divider } from 'react-native-elements';
 import moment from "moment/moment";
 import { useSelector } from 'react-redux';
 import HomeScreen from '../Home/HomeScreen';
+
+const alertMessage = "";
 
 export default function UpdateAlarm(props,{navigation}) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
@@ -205,11 +207,19 @@ export default function UpdateAlarm(props,{navigation}) {
     catch (e){
       console.log("error:"+e);
     }
-    navigation.navigate('HomeScreen')
+    //navigation.navigate('HomeScreen')
 }
 
 function update(){
   sendData();
+  Alert.alert(
+    '修改完成！',
+    alertMessage,
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed!')},
+    ]
+  )
+  
 }
 
   return(
