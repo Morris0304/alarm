@@ -89,7 +89,7 @@ export default function App() {
 
     useEffect(() => {
         fetchData();
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token).then(dispatch(authLogin())));
     
         // 取得時間
         const moment = require('moment');
