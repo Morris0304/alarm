@@ -236,85 +236,14 @@ var Airtable = require('airtable');
       <View style={styles.acclogout}>
         <Button onPress={press} color="#ffffff" title="登出"/>
       </View>
-    {/* <Provider>
-      <Portal>
-        <FAB.Group 
-          open={open}
-          icon={open ? 'calendar-today' : 'plus'}
-          actions={[
-            { icon: 'plus', 
-              onPress: () => navigation.navigate('addPhoneNum') },
-            {
-              icon: 'star',
-              label: 'Star',
-              onPress: () => console.log('Pressed star'),
-            },
-            {
-              icon: 'email',
-              label: 'Email',
-              onPress: () => console.log('Pressed email'),
-            },
-            {
-              icon: 'bell',
-              label: 'Remind',
-              onPress: () => console.log('Pressed notifications'),
-            },
-          ]}
-          onStateChange={onStateChange}
-          onPress={() => {
-            if (open) {
-              // do something if the speed dial is open
-            }
-          }}
-        />
-      </Portal>
-    </Provider> */}
+    
     </ImageBackground>
     </View>
     
   );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     // alignItems: "center",
-//     // justifyContent: "center",
-//     flexDirection: "column",
-//     minHeight: 500
-//   },
-//   image: {
-//     flex: 1,
-//     resizeMode: "cover",
-//     justifyContent: "center"
-//   },
-//   text: {
-//     color: "white",
-//     fontSize: 42,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//     backgroundColor: "#000000a0"
-//   },
-//   button: {
-//     marginTop:"5%"
-//   },
-// });
-
 
   
 
-//  return (
-//    <View style={styles.container}>
-//    <FlatList 
-//     data={alarm} 
-//     renderItem = {renderItem}
-//     keyExtractor={(item, index) => ""+index}
-//     >
-//    </FlatList>
-//    {/* <Fab onPress={()=>setModalVisible(true)}>
-//      <Icon ios='ios-add' android="md-add"/>
-//    </Fab>
-//    <PersonAdd modalVisible = {modalVisible} update={update}/> */}
-//    </View>
-   
-//  );
+

@@ -32,7 +32,7 @@ export default function UpdateAlarm(props,{navigation}) {
   const [Time, setTime] = useState(item.fields.Time);
   const [showTime,setShowTime] = useState(moment(item.fields.Time).format('H:mm'));
   const [TimeString, setTimeString] = useState('');
-  const [Repeat, setRepeat] = useState(item.fields.Repeat);
+  const [Repeat, setRepeat] = useState("");
   const [changeRepeat, setChangeRepeat] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -79,6 +79,7 @@ export default function UpdateAlarm(props,{navigation}) {
         setIsEnabled(false)
     }
     setName(item.fields.Name)
+    setRepeat(item.fields.Repeat)
     console.log(item.fields.Time)
     setTimeString(moment(item.fields.Time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
     console.log("TimeString",TimeString)
