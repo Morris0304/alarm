@@ -36,6 +36,14 @@ function weather() {
   );
 }
 
+function newAlarm() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="NewAlarm" component={NewAlarm} />
+    </Stack.Navigator>
+  );
+}
+
 function Sign() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}} >
@@ -79,7 +87,7 @@ const TabStack = () =>{
       >
     
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="New" component={NewAlarm} />
+        <Tab.Screen name="New" component={newAlarm} />
         <Tab.Screen name="weather" component={weather} />
         <Tab.Screen name="test" component={test} />
       </Tab.Navigator>

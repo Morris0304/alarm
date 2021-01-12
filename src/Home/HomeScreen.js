@@ -29,6 +29,7 @@ import { authLogin, authLogout } from '../store/action/index'
 
 
 
+
 export default function HomeScreen({navigation}) {
 
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ var Airtable = require('airtable');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [refreshing,setRefreshing] = useState(false);
+  
 
 
   const onRefresh = React.useCallback(() => {
@@ -69,8 +71,17 @@ var Airtable = require('airtable');
 
   async function fetchData () {
       const result = await axios.get(get_url,axios_config);
-      setAlarm(result.data.records);
-      console.warn(result.data.records)
+      const userAlarm = [];
+      for(i=0;i<result.data.records.length;i++){
+        if(result.data.records[i].fields.userId == userId){
+          userAlarm.push(result.data.records[i])
+          console.log(result.data.records[i])
+        }
+      }
+      console.log("userAlarm",[...userAlarm])
+      setAlarm([...userAlarm]);
+      console.log("alarm",alarm)
+      //console.warn(result.data.records)
   }
 
   // useFocusEffect(()=>{
@@ -180,8 +191,7 @@ var Airtable = require('airtable');
       </FlatList> */}
       
       <ScrollView style={{backgroundColor:'#003f5c'}} 
-    refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {
         alarm && alarm.map(( item )=>(
           <TouchableOpacity>

@@ -187,12 +187,6 @@ function update(){
           //  onChangeTime={time=>setTime(time)}
          />
         </View>
-       {/* <TextInput
-        style={styles.inputStyle}
-        placeholder=""
-        value={email}
-        onChangeText={text=>setEmail(text)}
-      /> */}
       <Divider style={styles.NewAlarmDivider} />
       <View style={{flexDirection: 'row'}}>
       <Text style={styles.subtitle}>重複提醒</Text>
@@ -206,18 +200,6 @@ function update(){
         </View>
         <Divider style={styles.NewAlarmDivider} />
       <Text style={styles.subtitle}>選擇星期重複</Text>
-      {/* {checkboxes.map(checkbox => (
-        <View style={{flexDirection: 'row'}}>
-         <CheckBox
-           center
-           key={checkbox.id}
-           checked={checkbox.id == checkedId}
-           onPress={() => handleCheck(checkbox.id)}
-         />
-      <Text>    {checkbox.title}</Text>
-         </View>
-       ))} */}
-
        
        <View style={{flexDirection:'row', alignSelf:'center'}}>
         <View style={styles.checkbox}>

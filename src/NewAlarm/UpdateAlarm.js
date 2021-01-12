@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {axios_config, url} from './config';
-import { View, Text, Button, ImageBackground, Layout ,TextInput} from 'react-native';
+import { View, Text, Button, ImageBackground, Layout ,TextInput , Alert} from 'react-native';
 import {CheckBox} from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
@@ -17,6 +17,8 @@ import { Divider } from 'react-native-elements';
 import moment from "moment/moment";
 import { useSelector } from 'react-redux';
 
+const alertMessage = "";
+
 export default function UpdateAlarm(props,{navigation}) {
   const get_url=url+"?maxRecords=50&view=Grid%20view";
 
@@ -30,7 +32,7 @@ export default function UpdateAlarm(props,{navigation}) {
   const [Time, setTime] = useState(item.fields.Time);
   const [showTime,setShowTime] = useState(moment(item.fields.Time).format('H:mm'));
   const [TimeString, setTimeString] = useState('');
-  const [Repeat, setRepeat] = useState("");
+  const [Repeat, setRepeat] = useState(item.fields.Repeat);
   const [changeRepeat, setChangeRepeat] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -47,25 +49,25 @@ export default function UpdateAlarm(props,{navigation}) {
   useEffect(()=>{
     for(i=0;i<item.fields.Day.length;i++){
         if(item.fields.Day[i]=="一"){
-            weeks[1]=true
+            week[1]=true
         }
         if(item.fields.Day[i]=="二"){
-            weeks[2]=true
+            week[2]=true
         }
         if(item.fields.Day[i]=="三"){
-            weeks[3]=true
+            week[3]=true
         }
         if(item.fields.Day[i]=="四"){
-            weeks[4]=true
+            week[4]=true
         }
         if(item.fields.Day[i]=="五"){
-            weeks[5]=true
+            week[5]=true
         }
         if(item.fields.Day[i]=="六"){
-            weeks[6]=true
+            week[6]=true
         }
         if(item.fields.Day[i]=="日"){
-            weeks[0]=true
+            week[0]=true
         }
         setWeeks(weeks)
     }
@@ -76,7 +78,6 @@ export default function UpdateAlarm(props,{navigation}) {
     else{
         setIsEnabled(false)
     }
-    setRepeat(item.fields.Repeat)
     setName(item.fields.Name)
     console.log(item.fields.Time)
     setTimeString(moment(item.fields.Time).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss'))
@@ -111,8 +112,9 @@ export default function UpdateAlarm(props,{navigation}) {
     else{
        setRepeat("0");
     }
-    console.log(Repeat)
+    console.log("開關",Repeat)
     setChangeRepeat(Repeat)
+    
   }
 
   const handleConfirmt = (time) => {
@@ -140,7 +142,8 @@ export default function UpdateAlarm(props,{navigation}) {
   async function sendData () {
     console.log(item.id)
     console.log(Name)
-    console.log(Repeat)
+    console.log("Repeat",Repeat)
+    console.log("changeRepeat",changeRepeat)
     const weeks = [];
       if(week[0] == true){
         weeks.push("日")
@@ -165,16 +168,16 @@ export default function UpdateAlarm(props,{navigation}) {
       }
       console.log([...weeks])
       
-    const newAlarm={
-      fields:{
-        Name:Name,
-        Repeat:Repeat,
-        Day:[...weeks],
-        Time:TimeString,
-        Status:"ON",
-        // userId:["rec8116cdd76088af"],
-      }
-    }
+    // const newAlarm={
+    //   fields:{
+    //     Name:Name,
+    //     Repeat:changeRepeat,
+    //     Day:[...weeks],
+    //     Time:TimeString,
+    //     Status:"ON",
+    //     // userId:["rec8116cdd76088af"],
+    //   }
+    // }
     console.log("時間",Time)
     console.log("時間String",TimeString)
     // console.log(week)
@@ -204,11 +207,19 @@ export default function UpdateAlarm(props,{navigation}) {
     catch (e){
       console.log("error:"+e);
     }
-    navigation.navigate('HomeScreen')
+    //navigation.navigate('HomeScreen')
 }
 
 function update(){
   sendData();
+  Alert.alert(
+    '修改完成！',
+    alertMessage,
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed!')},
+    ]
+  )
+  
 }
 
   return(
@@ -284,31 +295,31 @@ function update(){
        
        <View style={{flexDirection:'row', alignSelf:'center'}}>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[1]} color="#fc5185" onPress={() => handleCheck(1)}/>
+          <CheckBox checked={week[1]} color="#fc5185" onPress={() => handleCheck(1)}/>
           <Text style={styles.checkboxText}>星期一</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[2]} color="#fc5185" onPress={() => handleCheck(2)}/>
+          <CheckBox checked={week[2]} color="#fc5185" onPress={() => handleCheck(2)}/>
           <Text style={styles.checkboxText}>星期二</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[3]} color="#fc5185" onPress={() => handleCheck(3)}/>
+          <CheckBox checked={week[3]} color="#fc5185" onPress={() => handleCheck(3)}/>
           <Text style={styles.checkboxText}>星期三</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[4]} color="#fc5185" onPress={() => handleCheck(4)}/>
+          <CheckBox checked={week[4]} color="#fc5185" onPress={() => handleCheck(4)}/>
           <Text style={styles.checkboxText}>星期四</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[5]} color="#fc5185" onPress={() => handleCheck(5)}/>
+          <CheckBox checked={week[5]} color="#fc5185" onPress={() => handleCheck(5)}/>
           <Text style={styles.checkboxText}>星期五</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[6]} color="#fc5185" onPress={() => handleCheck(6)}/>
+          <CheckBox checked={week[6]} color="#fc5185" onPress={() => handleCheck(6)}/>
           <Text style={styles.checkboxText}>星期六</Text>
         </View>
         <View style={styles.checkbox}>
-          <CheckBox checked={weeks[0]} color="#fc5185" onPress={() => handleCheck(0)}/>
+          <CheckBox checked={week[0]} color="#fc5185" onPress={() => handleCheck(0)}/>
           <Text style={styles.checkboxText}>星期日</Text>
         </View>
         </View>
@@ -346,88 +357,3 @@ const styles1 = StyleSheet.create({
   },
 });
 
-// import React, {useState, useEffect} from 'react';
-// import axios from 'axios';
-// import {axios_config, url} from './config';
-// import { View, Text, Button, ImageBackground, Layout ,TextInput} from 'react-native';
-// import {CheckBox} from 'native-base';
-// import { NavigationContainer } from '@react-navigation/native';
-// // import { createStackNavigator } from '@react-navigation/stack';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// // import Ionicons from 'react-native-vector-icons/Ionicons';
-// // import { Datepicker,Toggle } from '@ui-kitten/components';
-// import { Switch, StyleSheet, StatusBar } from "react-native";
-// import DateTimePickerModal from "react-native-modal-datetime-picker";
-// // import { FAB, Portal, Provider, Title, Paragraph, IconButton } from 'react-native-paper';
-// import { Container, Header, Fab, Icon, Image,Space} from 'native-base';
-// import {Card} from 'react-native-shadow-cards';
-// import styles from '../styles';
-// import { Divider } from 'react-native-elements';
-// import moment from "moment/moment";
-
-// export default function UpdateAlarm({ navigation }) {
-//   const get_url=url+"?maxRecords=50&view=Grid%20view";
-
-//   const [Name, setName] = useState("");
-//   const [Time, setTime] = useState("");
-//   const [Day, setDay] = useState("");
-//   const [Status, setStatus] = useState("");
-//   const [Repeat, setRepeat] = useState("");
-
-//   useEffect(()=>{
-//     setName(props.person.Name);
-//     setTime(props.person.Time);
-//     setDay(props.person.Day);
-//     setStatus(props.person.Status);
-//     setRepeat(props.person.Repeat);
-//   },[props.id]);
-
-//   function update(){
-//     async function sendData () {
-//       // if id exists, assign a newPerson with id
-//       // else assign a newPerson without id
-//       const newAlarm = props.id 
-//       ?{records:[{
-//         id: props.id,
-//         fields:{
-//           Name:name,
-//           Time:time,
-//           Day:day,
-//           Status:status,
-//           Repeat:repeat
-//         }}]
-//       }
-//       :{fields:{
-//           Name:name,
-//           Time:time,
-//           Day:day,
-//           Status:status,
-//           Repeat:repeat
-//       }}
-
-//       try {
-//       // if id exists, call put
-//       // else call post      
-//       const result = props.id
-//         ?await axios.put(url,newAlarm, axios_config)
-//         :await axios.post(url,newAlarm, axios_config);
-//       props.hide();}
-//       catch (e){
-//         console.log("error:"+e);
-//       }
-//     }
-//     sendData();
-//   }
-
-//   return (
-//     <Modal visible={props.modalVisible}>
-//       <TextInput placeholder="姓名" value={name} onChangeText={text=>setName(text)}/>
-//       <TextInput placeholder="時間" value={time} onChangeText={text=>setTime(text)}/>
-//       <TextInput placeholder="星期" value={day} onChangeText={text=>setDay(text)}/>
-//       <TextInput placeholder="開關" value={status} onChangeText={text=>setStatus(text)}/>
-//       <TextInput placeholder="重複" value={repeat} onChangeText={text=>setRepeat(text)}/>
-//       <Button onPress={update} title="確定"/>
-//       <Button onPress={props.hide} title="取消"/>
-//     </Modal>
-//   );
-// }
