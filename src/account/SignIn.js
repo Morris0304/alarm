@@ -76,8 +76,7 @@ export default function SignIn({navigation,props}) {
       const res = compare();
       if(res) {
         dispatch(setuserID(ID))
-        navigation.navigate('notification')
-        // dispatch(authLogin())
+        dispatch(authLogin())
       }else{
         Alert.alert('登入失敗！',alertMessage,[{text: 'OK', onPress: () => console.log('OK Pressed!')}]);
       }
